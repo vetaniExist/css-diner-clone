@@ -114,3 +114,11 @@
     color: black;
     border: 2px solid black;
 }
+
+.css_editor-input_field{
+    max-width: 20vw;
+    min-width: 1ch;
+    background: none;
+    border: none;
+    outline: none;
+  }

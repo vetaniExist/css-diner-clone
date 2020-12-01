@@ -35,6 +35,9 @@ export class Layout {
     this.cssEditorEnter = createEl("div");
     this.cssEditorEnterButton = configurateButton("enter");
 
+    this.cssEditorTextInput = createEl("input");
+    this.cssEditorTextInfo = createEl("p");
+
     this.htmlEditorCaptions = createEl("div");
     this.htmlEditorContent = createEl("div");
 
@@ -98,6 +101,34 @@ export class Layout {
 
     this.fillLineNumeric(this.cssEditorLineNumeric);
     this.cssEditorEnter.appendChild(this.cssEditorEnterButton);
+    this.addTextInCssEditor();
+  }
+
+  addTextInCssEditor() {
+    this.cssEditorTextInput.setAttribute("class", "css_editor-input_field");
+    this.cssEditorTextInput.setAttribute("type", "text");
+    this.cssEditorTextInput.setAttribute("placeholder", "input your code here");
+
+    // rewrite this
+    this.cssEditorEnterButton.addEventListener("click", () => {
+      console.log(this.cssEditorTextInput.value);
+      this.cssEditorTextInput.value = "";
+    });
+
+    this.cssEditorTextInput.addEventListener("keypress", (e) => {
+      if (e.code === "Enter") {
+        console.log(this.cssEditorTextInput.value);
+        this.cssEditorTextInput.value = "";
+      }
+    });
+
+
+    this.cssEditorTextInfo.innerText = "{\n"
+    + "*Styles would go here*"
+    + "\n}";
+
+    this.cssEditorText.appendChild(this.cssEditorTextInput);
+    this.cssEditorText.appendChild(this.cssEditorTextInfo);
   }
 
   configurateHtmlEditor() {
