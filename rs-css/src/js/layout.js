@@ -1,4 +1,4 @@
-function createEl(elName) {
+export function createEl(elName) {
   try {
     return document.createElement(elName);
   } catch (err) {
@@ -109,20 +109,6 @@ export class Layout {
     this.cssEditorTextInput.setAttribute("type", "text");
     this.cssEditorTextInput.setAttribute("placeholder", "input your code here");
 
-    // rewrite this
-    this.cssEditorEnterButton.addEventListener("click", () => {
-      console.log(this.cssEditorTextInput.value);
-      this.cssEditorTextInput.value = "";
-    });
-
-    this.cssEditorTextInput.addEventListener("keypress", (e) => {
-      if (e.code === "Enter") {
-        console.log(this.cssEditorTextInput.value);
-        this.cssEditorTextInput.value = "";
-      }
-    });
-
-
     this.cssEditorTextInfo.innerText = "{\n"
     + "*Styles would go here*"
     + "\n}";
@@ -138,7 +124,7 @@ export class Layout {
     this.htmlEditorContent.setAttribute("class", "flex cssEditorContent");
 
     this.htmlEditorLineNumeric.setAttribute("class", "flex flex-wrap editor-line_numeric");
-    this.htmlEditorText.setAttribute("class", "editor-text-html");
+    this.htmlEditorText.setAttribute("class", "editor-text-html showSpaces");
 
     this.htmlEditorBox.appendChild(this.htmlEditorCaptions);
     this.htmlEditorBox.appendChild(this.htmlEditorContent);
@@ -159,8 +145,65 @@ export class Layout {
     this.htmlEditorCaptions.appendChild(styleText);
 
     this.fillLineNumeric(this.htmlEditorLineNumeric);
+    // this.setHtmlEditorText("<div>\n</div>");
+  }
 
-    this.htmlEditorText.innerText = "<div>\n</div>" ;
+  getEditorEnterButton() {
+    return this.cssEditorEnterButton;
+  }
+  getEditorTextInput() {
+    return  this.cssEditorTextInput;
+  }
+
+  getEditorTextInputValue() {
+    return this.cssEditorTextInput.value;
+  }
+
+  setEditorTextInputValue(newVal) {
+    this.cssEditorTextInput.value = newVal;
+  }
+
+  parseHtmlTag(tag) {
+    // console.log("get tag", tag.outerHTML);
+    let arr = tag.childNodes;
+    //console.log("parse");
+    console.log(tag.textContent);
+    // console.log(arr);
+    arr.forEach(el => this.parseHtmlTag(el));
+
+  }
+
+  getAllIncludes(str, substr) {
+    let listIdx = []
+    let lastIndex = -1;
+    while ((lastIndex = str.indexOf(substr, lastIndex + 1)) !== -1) {
+      listIdx.push(lastIndex)
+    }
+    return listIdx;
+  }
+
+
+  setHtmlEditorText(newHtml) {
+    this.htmlEditorText.innerText = "";
+    console.log("newHtml");
+    console.log(newHtml);
+    console.log(typeof newHtml);
+    // this.parseHtmlTag(newHtml);
+    // let tmpHtml = newHtml.cloneNode(true);
+    //console.log(tmpHtml.childElementCount);
+    // console.log(JSON.parse(newHtml));
+    // console.log(newHtml.outerHTML);
+    let tmpStr = newHtml.textContent.slice();
+    //let idx = this.getAllIncludes(tmpStr, "tab");
+    // tmpStr = tmpStr.replace(/tab/g, '&nbsp');
+    // tmpStr = tmpStr.replace(/nl/g, '\n');
+
+    // console.log(newHtml)
+    //tmpStr = tmpStr.replace(/\t/g, '\n');
+    console.log(newHtml.textContent)
+    console.log(tmpStr)
+    this.htmlEditorText.innerText = "";
+    this.htmlEditorText.appendChild(newHtml.cloneNode(true));
   }
 
   fillLineNumeric(line) {

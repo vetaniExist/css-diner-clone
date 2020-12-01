@@ -1,6 +1,6 @@
-import { Layout } from "./layout";
+import { RsCss } from "./rsCss";
 
-const layout = new Layout();
+const game = new RsCss();
 
-layout.configurateLayout();
+game.start();
 console.log("hello webpack");

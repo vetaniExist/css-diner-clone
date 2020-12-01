@@ -105,7 +105,7 @@
 }
 
 .basic_button{
-    width: 4vw;
+    width: 52px;
     height: 25px;
 
     font-size: 14px;
@@ -122,3 +122,11 @@
     border: none;
     outline: none;
   }
+
+  .showSpaces{
+    white-space: pre;
+  }
+
+.block {
+    display: block;
+}
