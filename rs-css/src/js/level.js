@@ -13,72 +13,93 @@ export class Level {
     return this.levelHtml;
   }
 
-  configurateLevelFromString(level, str) {
-    const strArr = str.split(";");
-    const resultEl = createEl("div");
-    let tabs = 0;
+  parseTemplateString(str) {
+    console.log("parseTemplateString");
+    console.log(str);
 
-    for (let i = 0; i < strArr.length; i += 1) {
-      tabs -= 2;
-      tabs = tabs < 0 ? 0 : tabs;
-      if (strArr[i] === "") {
+    const splitedByBasicDelemeter = str.split(";");
+    let tabsCounter = 0;
+    const result = this.createNode("div");
+    let resultPrev = {
+      curNode: null,
+      prevNode: null,
+    };
+    let curNode = null;
+
+    for (let z = 0; z < splitedByBasicDelemeter.length; z += 1) {
+      tabsCounter = tabsCounter - 1 < 0 ? 0 : tabsCounter - 1;
+
+
+      if (splitedByBasicDelemeter[z] === "") {
+        tabsCounter = tabsCounter - 1 < 0 ? 0 : tabsCounter - 1;
+        resultPrev = resultPrev.prevNode;
         continue;
       }
-      let prev = null;
-      let subSplit = strArr[i].split(">");
+      //console.log(splitedByBasicDelemeter[z]);
+      const splitedByDeepLevels = splitedByBasicDelemeter[z].split(">");
 
-      for (let j = 0; j < subSplit.length; j += 1) {
-        if (resultEl.classList[0]) {
-          prev = resultEl.chindNodes[0];
-        }
-        tabs ++;
-        if (subSplit[j].indexOf(",") > -1) {
+      let currentDeep;
+      for (let i = 0; i < splitedByDeepLevels.length; i += 1) {
+        // console.log("  ".repeat(i) +  splitedByDeepLevels[i]);
+        const splitedInSingleLevel = splitedByDeepLevels[i].split(",");
 
-          subSplit[j] = subSplit[j].split(",");
-          for (let z = 0; z < subSplit[j].length; z += 1) {
-            console.log(`subSplit[${j}][${z}] `, subSplit[j][z]);
-            console.log("prev" , prev );
-            this.configurateAllTags(resultEl, prev, subSplit[j][z], tabs - 1);
+
+        for (let j = 0; j < splitedInSingleLevel.length; j += 1) {
+          curNode = this.createNode(splitedInSingleLevel[j], tabsCounter); 
+          // currentDeep.appendChild(curNode);
+          // console.log("  ".repeat(tabsCounter) + splitedInSingleLevel[j] + j + i);
+          // console.log(curNode);
+
+          // зашли в цикл добавили ноды первого уровня в result, поставили указатель resultPrev на эту ноду
+          // console.log(i, j);
+          // console.log(splitedByDeepLevels.length, splitedInSingleLevel.length);
+          if (tabsCounter === 0 ) {
+            //console.log("  ".repeat(tabsCounter) + splitedInSingleLevel[j] + j + i);
+            result.appendChild(curNode);
+            resultPrev.curNode = curNode;
+            resultPrev.prevNode = curNode;
+          } else {
+            resultPrev.curNode.appendChild(curNode);
           }
-        } else {
-            console.log("alone ", subSplit[j]);
-          this.configurateAllTags(resultEl, prev, subSplit[j],  tabs - 1);
         }
+       
+        if (i !== splitedByDeepLevels.length - 1) {
+          tabsCounter += 1;
+          // prevNode = resultPrev;
+          const newResult = {
+            curNode: curNode,
+            prevNode: resultPrev,
+          }
+          resultPrev = newResult;
+          //resultPrev.prevNode = curNode;
+          // resultPrev.curNode = curNode;
+
+        }
+
       }
     }
-    resultEl.setAttribute("class", "showSpaces");
-    console.log(resultEl);
-    level.setLevelHtml(resultEl);
+    console.log("result");
+    console.log(result);
+    console.log(result.innerText)
+    console.log("\n\n\n\n\n\n");
+    console.log("\n\n\n\n\n\n");
+
+    return result;
   }
 
-  configurateAllTags(resultEl, prev, subSplit,  tabs) {
-    const newEl = this.configurateTag(subSplit, tabs);
-    if (resultEl) {
-      if (resultEl.prev) {
-       resultEl.prev.appendChild(newEl);
-      } else {
-        prev = resultEl;
-        resultEl.appendChild(newEl);
-      }
-    } else {
-      prev = newEl;
-      resultEl = newEl;
-    };
-  }
+  createNode(str, tabs) {
+    // split on classes;
+    str = str.split(".");
+    const classes = str.slice(1, str.length);
 
-  configurateTag(subSplit, it) {
-    console.log("configurateTag", subSplit);
-    subSplit = subSplit.split(".");
-    const classes = subSplit.slice(1, subSplit.length);
-    // находим id и тэг
-    subSplit = subSplit[0].split("#");
-    const id = subSplit[1];
-    const tag = subSplit[0];
+    // find id and tag 
+    str = str[0].split("#");
+    const id = str[1];
+    const tag = str[0];
 
-    console.log("tag", tag);
     const newEl = createEl(tag);
-    newEl.innerText = "\t".repeat(it) + `<${tag}\n`;
-
+    // newEl.innerText = `<${tag}`;
+    newEl.innerText = "\t".repeat(tabs) + `<${tag}\n`;
     if (id) {
       newEl.innerText += " id = \"" + id + "\"";
       newEl.setAttribute("id", id);
@@ -86,19 +107,25 @@ export class Level {
 
     if (classes.length) {
       newEl.innerText += " class = ";
-    }
-    // находим все классы
-    for (let i = 0; i < classes.length; i += 1) {
-      newEl.innerText += `"${classes[i]}"`;
-      newEl.classList.add(classes[i]);
-      if (i !== classes.length - 1) {
-        newEl.innerText += " ";
+      for (let i = 0; i < classes.length; i += 1) {
+        newEl.innerText += `"${classes[i]}"`;
+        newEl.classList.add(classes[i]);
+        if (i !== classes.length - 1) {
+          newEl.innerText += " ";
+        }
       }
     }
     newEl.innerText += ">";
     newEl.setAttribute("class", "block");
     return newEl;
+
   }
+
+  configurateLevelFromString(level, str) {
+    level.setLevelHtml(this.parseTemplateString(str));
+    return ;
+  }
+
 }
 
 export default Level;

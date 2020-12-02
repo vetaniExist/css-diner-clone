@@ -34,7 +34,7 @@ export class RsCss {
 
   constructLevels() {
     const level = new Level();
-    level.configurateLevelFromString(level, "div>apple.small>div,div>test;div;div#test>t2,div;te,te;div;div");
+    level.configurateLevelFromString(level, "div>apple.small>div,div>test,newtest;div;;div#test>t2,div;te,te;div>hoba>hoba2,hoba21>hoba3;;div");
     this.levels.push(level);
   }
 }
