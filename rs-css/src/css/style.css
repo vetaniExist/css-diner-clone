@@ -94,6 +94,9 @@
 .editor-text-html {
     width: 26vw;
     background-color: rgb(	220, 220, 220);
+
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .editor-enter{
@@ -129,4 +132,5 @@
 
 .block {
     display: block;
+    margin: 0;
 }
