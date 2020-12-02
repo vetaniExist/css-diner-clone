@@ -46,6 +46,9 @@ export class Layout {
 
     this.rightMenuTitle = createEl("div");
     this.rightMenuLevels = createEl("div");
+
+    this.imageBoxTitle = createEl("div");
+    this.imageBoxContent = createEl("div");
   }
 
   configurateLayout() {
@@ -55,13 +58,14 @@ export class Layout {
     this.gameFlexBox.setAttribute("class", "flex flex-wrap gameBox");
     this.rightMenuFlexBox.setAttribute("class", "flex flex-wrap rightMenuBox");
 
-    this.imageBox.setAttribute("class", "imageBox");
+    this.imageBox.setAttribute("class", "flex flex-wrap imageBox");
     this.editorsBox.setAttribute("class", "flex editorsBox");
 
     this.configurateCssEditor();
     this.configurateHtmlEditor();
 
     this.configurateRightMenu();
+    this.initImageBox();
 
     this.editorsBox.appendChild(this.cssEditorBox);
     this.editorsBox.appendChild(this.htmlEditorBox);
@@ -162,18 +166,90 @@ export class Layout {
   }
 
   initLevelsField(levels) {
-    // const levelNames = levels.map(level => level.levelName);
-    // console.log("levelNames: ", levelNames);
     for(let i = 0 ; i < levels.length; i += 1) {
       const levelButton = configurateButton(levels[i].getLevelName());
       levelButton.classList.add("button_level");
       this.rightMenuLevels.appendChild(levelButton);
 
-      // this.layout.setHtmlEditorText(this.levels[0].getLevelHtml());
       levelButton.addEventListener("click", () => {
         this.setHtmlEditorText(levels[i].getLevelHtml());
+        this.configurateImageBoxContent(levels[i].getLevelHtml());
       });
     }
+  }
+
+  initImageBox() {
+    this.imageBoxTitle.setAttribute("class", "flex right_menu-title");
+    this.setImageBoxTitle("test");
+
+    this.imageBoxContent = createEl("div");
+    this.imageBoxContent.setAttribute("class", "image_box-content");
+
+    this.imageBox.appendChild(this.imageBoxTitle);
+    this.imageBox.appendChild(this.imageBoxContent);
+  }
+
+  parseNodeForChildren(node) {
+    let clone = node;
+    console.log("clone" , clone);
+    let nodes = [];
+    for (let i = 0; i < clone.childNodes.length; i += 1) {
+      const curNode = clone.childNodes[i];
+      if (curNode.nodeType !== Node.TEXT_NODE) {
+        nodes.push(curNode);
+      } else {
+        console.log("text");
+        curNode.textContent = "";
+      }
+    }
+    
+
+    console.log("return");
+    console.log(nodes);
+    return nodes;
+  }
+
+  configurateImageBoxContent(htmlObject) {
+    // обойдем все тэги принятого объекта
+    console.log("configurateImageBoxContent");
+    let clone = htmlObject.cloneNode(true);
+    console.log("startClone");
+    console.log(clone.cloneNode(true));
+    console.log(clone);
+    let nodes = [];
+
+    let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON"];
+    nodes = nodes.concat(this.parseNodeForChildren(clone));
+
+    console.log("работаем с клоном");
+    console.log(clone.tagName);
+    if (arrOfActivatableElements.includes(clone.tagName)) {
+      clone.classList.add("active");
+    }
+
+    while (nodes.length) {
+      let curNode = nodes.shift();
+      nodes = nodes.concat(this.parseNodeForChildren(curNode));
+      console.log("new nodes");
+      console.log(nodes);
+      console.log("curNode");
+      console.log(curNode.tagName);
+      if (arrOfActivatableElements.includes(curNode.tagName)) {
+        console.log("НАШЛИ ПОЕБОТУ СМЕРТНУЮ");
+        console.log(curNode.tagName);
+        curNode.classList.add("active");
+        console.log(curNode);
+      }
+      // curNode.innerText = "";
+    }
+
+    // console.log(clone);
+    this.imageBoxContent.innerText = "";
+    this.imageBoxContent.appendChild(clone);
+  }
+
+  setImageBoxTitle(str) {
+    this.imageBoxTitle.innerText = str;
   }
 
   getEditorEnterButton() {
@@ -191,23 +267,6 @@ export class Layout {
     this.cssEditorTextInput.value = newVal;
   }
 
-  parseHtmlTag(tag) {
-    let arr = tag.childNodes;
-    console.log(tag.textContent);
-    arr.forEach(el => this.parseHtmlTag(el));
-
-  }
-
-  getAllIncludes(str, substr) {
-    let listIdx = []
-    let lastIndex = -1;
-    while ((lastIndex = str.indexOf(substr, lastIndex + 1)) !== -1) {
-      listIdx.push(lastIndex)
-    }
-    return listIdx;
-  }
-
-
   setHtmlEditorText(newHtml) {
     this.htmlEditorText.innerText = "";
     console.log("newHtml");
@@ -218,7 +277,8 @@ export class Layout {
     console.log(newHtml.textContent)
     console.log(tmpStr)
     this.htmlEditorText.innerText = "";
-    this.htmlEditorText.appendChild(newHtml.cloneNode(true));
+    const clone = newHtml.cloneNode(true);
+    this.htmlEditorText.appendChild(clone);
   }
 
   fillLineNumeric(line) {
