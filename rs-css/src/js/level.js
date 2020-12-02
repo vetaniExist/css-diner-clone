@@ -28,7 +28,9 @@ export class Level {
 
     for (let z = 0; z < splitedByBasicDelemeter.length; z += 1) {
       tabsCounter = tabsCounter - 1 < 0 ? 0 : tabsCounter - 1;
-
+      if (z > 0) {
+        resultPrev = resultPrev.prevNode;
+      }
 
       if (splitedByBasicDelemeter[z] === "") {
         tabsCounter = tabsCounter - 1 < 0 ? 0 : tabsCounter - 1;
@@ -80,10 +82,8 @@ export class Level {
     }
     console.log("result");
     console.log(result);
-    console.log(result.innerText)
     console.log("\n\n\n\n\n\n");
     console.log("\n\n\n\n\n\n");
-
     return result;
   }
 
@@ -123,9 +123,7 @@ export class Level {
 
   configurateLevelFromString(level, str) {
     level.setLevelHtml(this.parseTemplateString(str));
-    return ;
   }
-
 }
 
 export default Level;
