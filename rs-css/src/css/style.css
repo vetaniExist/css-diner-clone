@@ -28,7 +28,7 @@
 }
 
 .rightMenuBox{
-    background-color: blue;
+    background-color: #171009;
     height: 90vh;
     width: 20vw;
 }
@@ -133,4 +133,30 @@
 .block {
     display: block;
     margin: 0;
+}
+
+
+.right_menu-title {
+    height: 5vh;
+    width: inherit;
+    color: wheat;
+
+    font-size: 40px;
+    justify-content: center;
+    align-items: center;
+}
+.right_menu-content {
+    height: 85vh;
+    width: inherit;
+    color: wheat;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.button_level{
+    width: 18vw;
+    height: 25px;
+    color: wheat;
+    border: 2px solid wheat;
 }

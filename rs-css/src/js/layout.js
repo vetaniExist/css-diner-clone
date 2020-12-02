@@ -43,6 +43,9 @@ export class Layout {
 
     this.htmlEditorLineNumeric = createEl("div");
     this.htmlEditorText = createEl("div");
+
+    this.rightMenuTitle = createEl("div");
+    this.rightMenuLevels = createEl("div");
   }
 
   configurateLayout() {
@@ -50,13 +53,15 @@ export class Layout {
 
     this.mainFlexBox.setAttribute("class", "flex main-box");
     this.gameFlexBox.setAttribute("class", "flex flex-wrap gameBox");
-    this.rightMenuFlexBox.setAttribute("class", "flex rightMenuBox");
+    this.rightMenuFlexBox.setAttribute("class", "flex flex-wrap rightMenuBox");
 
     this.imageBox.setAttribute("class", "imageBox");
     this.editorsBox.setAttribute("class", "flex editorsBox");
 
     this.configurateCssEditor();
     this.configurateHtmlEditor();
+
+    this.configurateRightMenu();
 
     this.editorsBox.appendChild(this.cssEditorBox);
     this.editorsBox.appendChild(this.htmlEditorBox);
@@ -145,7 +150,30 @@ export class Layout {
     this.htmlEditorCaptions.appendChild(styleText);
 
     this.fillLineNumeric(this.htmlEditorLineNumeric);
-    // this.setHtmlEditorText("<div>\n</div>");
+  }
+
+  configurateRightMenu() {
+    this.rightMenuTitle.setAttribute("class", "flex right_menu-title");
+    this.rightMenuLevels.setAttribute("class", "flex flex-wrap right_menu-content");
+    this.rightMenuTitle.innerText = "Levels";
+
+    this.rightMenuFlexBox.appendChild(this.rightMenuTitle);
+    this.rightMenuFlexBox.appendChild(this.rightMenuLevels);
+  }
+
+  initLevelsField(levels) {
+    // const levelNames = levels.map(level => level.levelName);
+    // console.log("levelNames: ", levelNames);
+    for(let i = 0 ; i < levels.length; i += 1) {
+      const levelButton = configurateButton(levels[i].getLevelName());
+      levelButton.classList.add("button_level");
+      this.rightMenuLevels.appendChild(levelButton);
+
+      // this.layout.setHtmlEditorText(this.levels[0].getLevelHtml());
+      levelButton.addEventListener("click", () => {
+        this.setHtmlEditorText(levels[i].getLevelHtml());
+      });
+    }
   }
 
   getEditorEnterButton() {
@@ -164,11 +192,8 @@ export class Layout {
   }
 
   parseHtmlTag(tag) {
-    // console.log("get tag", tag.outerHTML);
     let arr = tag.childNodes;
-    //console.log("parse");
     console.log(tag.textContent);
-    // console.log(arr);
     arr.forEach(el => this.parseHtmlTag(el));
 
   }
@@ -188,18 +213,8 @@ export class Layout {
     console.log("newHtml");
     console.log(newHtml);
     console.log(typeof newHtml);
-    // this.parseHtmlTag(newHtml);
-    // let tmpHtml = newHtml.cloneNode(true);
-    //console.log(tmpHtml.childElementCount);
-    // console.log(JSON.parse(newHtml));
-    // console.log(newHtml.outerHTML);
     let tmpStr = newHtml.textContent.slice();
-    //let idx = this.getAllIncludes(tmpStr, "tab");
-    // tmpStr = tmpStr.replace(/tab/g, '&nbsp');
-    // tmpStr = tmpStr.replace(/nl/g, '\n');
 
-    // console.log(newHtml)
-    //tmpStr = tmpStr.replace(/\t/g, '\n');
     console.log(newHtml.textContent)
     console.log(tmpStr)
     this.htmlEditorText.innerText = "";

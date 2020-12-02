@@ -40,8 +40,17 @@ function createCloseTag(str, tabs) {
 }
 
 export class Level {
-  constructor() {
+  constructor(levelName) {
     this.levelHtml = null;
+    this.levelName = levelName;
+  }
+
+  setLevelName(newLevelName) {
+    this.levelName = newLevelName;
+  }
+
+  getLevelName() {
+    return this.levelName;
   }
 
   setLevelHtml(newHtml) {
