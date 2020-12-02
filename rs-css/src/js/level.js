@@ -64,7 +64,8 @@ export class Level {
   parseTemplateString(str) {
     const splitedByBasicDelemeter = str.split(";");
     let tabsCounter = 0;
-    const result = createNode("div");
+    const result = createNode("div", 0);
+
     let resultPrev = {
       curNode: null,
       prevNode: null,
@@ -73,6 +74,10 @@ export class Level {
     
     let arrayOfClosingTags = [];
     let arrayOfTags = [];
+
+    arrayOfClosingTags.push("</div>");
+    arrayOfTags.push(result);
+
     for (let z = 0; z < splitedByBasicDelemeter.length; z += 1) {
       tabsCounter = tabsCounter - 1 < 0 ? 0 : tabsCounter - 1;
       if (z > 0) {

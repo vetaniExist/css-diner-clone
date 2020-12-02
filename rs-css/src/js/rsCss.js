@@ -15,7 +15,7 @@ export class RsCss {
     this.layout.configurateLayout();
     this.initCssEditorEvents();
     this.constructLevels();
-    this.layout.setHtmlEditorText(this.levels[0].getLevelHtml());
+    // this.layout.setHtmlEditorText(this.levels[0].getLevelHtml());
 
     this.layout.initLevelsField(this.levels);
   }
