@@ -24,14 +24,23 @@ function createNode(str, tabs) {
       // break;
     }
     else {
-      newEl.innerText += " class = ";
+      newEl.innerText += " class = \"";
       for (let i = 0; i < classes.length; i += 1) {
-        newEl.innerText += `"${classes[i]}"`;
-        newEl.classList.add(classes[i]);
-        if (i !== classes.length - 1) {
-          newEl.innerText += " ";
+        if ( classes[i] === "selected") {
+          newEl.classList.add("shouldBeSelected");
+          if ( i === classes.length - 1) {
+            let inText = newEl.innerText;
+            newEl.innerText = inText.substring(0, inText.length - 1);
+          }
+        } else {
+          newEl.innerText += `${classes[i]}`;
+          newEl.classList.add(classes[i]);
+          if (i !== classes.length - 1) {
+            newEl.innerText += " ";
+          }
         }
       }
+      newEl.innerText += "\"";
     }
 
   }
