@@ -48,7 +48,7 @@ export class RsCss {
     this.levels.push(level3);
 
     const level4  = new Level("4");
-    level4.configurateLevelFromString(level4, "plate,plate>lemon,lemon");
+    level4.configurateLevelFromString(level4, "plate,plate>lemon.selected,lemon.selected");
     this.levels.push(level4);
   }
 }

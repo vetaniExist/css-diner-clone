@@ -183,7 +183,7 @@ export class Layout {
     this.setImageBoxTitle("test");
 
     this.imageBoxContent = createEl("div");
-    this.imageBoxContent.setAttribute("class", "image_box-content");
+    this.imageBoxContent.setAttribute("class", "flex image_box-content");
 
     this.imageBox.appendChild(this.imageBoxTitle);
     this.imageBox.appendChild(this.imageBoxContent);

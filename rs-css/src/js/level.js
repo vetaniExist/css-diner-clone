@@ -19,17 +19,24 @@ function createNode(str, tabs) {
   }
 
   if (classes.length) {
-    newEl.innerText += " class = ";
-    for (let i = 0; i < classes.length; i += 1) {
-      newEl.innerText += `"${classes[i]}"`;
-      newEl.classList.add(classes[i]);
-      if (i !== classes.length - 1) {
-        newEl.innerText += " ";
+    if (classes.length === 1 && classes[0] === "selected") {
+      newEl.classList.add("shouldBeSelected");
+      // break;
+    }
+    else {
+      newEl.innerText += " class = ";
+      for (let i = 0; i < classes.length; i += 1) {
+        newEl.innerText += `"${classes[i]}"`;
+        newEl.classList.add(classes[i]);
+        if (i !== classes.length - 1) {
+          newEl.innerText += " ";
+        }
       }
     }
+
   }
   newEl.innerText += ">";
-  newEl.setAttribute("class", "block");
+  newEl.classList.add("block");
   return newEl;
 }
 
