@@ -180,6 +180,11 @@ plate.active {
     height: 50px;
     border-radius: 50%;
     background-color: red;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 lemon.active {
@@ -189,6 +194,20 @@ lemon.active {
     background-color: yellowgreen;
     display: flex;
 }
+
+apple.active {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
+    display: flex;
+}
+
+apple.small.active {
+    width: 15px;
+    height: 15px;
+}
+
 
 .image_box-content {
     height: 20vh;

@@ -240,7 +240,7 @@ export class Layout {
     console.log(clone);
     let nodes = [];
 
-    let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON"];
+    let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
     nodes = nodes.concat(this.parseNodeForChildren(clone));
 
     console.log("работаем с клоном");
@@ -287,6 +287,27 @@ export class Layout {
 
   setEditorTextInputValue(newVal) {
     this.cssEditorTextInput.value = newVal;
+  }
+
+  getCurrentLevelButton() {
+    return this.currentLevelButton;
+  }
+
+  trySetNextCurrentLevelButton() {
+    console.log("test");
+    this.currentLevelButton.nextSibling;
+    console.log(this.currentLevelButton);
+    console.log(this.currentLevelButton.nextSibling);
+    console.log("test pass")
+    if (this.getCurrentLevelButton().nextSibling) {
+      this.currentLevelButton.classList.toggle("button_level-active");
+      this.currentLevelButton = this.getCurrentLevelButton().nextSibling;
+      console.log("we here, johny");
+      console.log(this.currentLevelButton);
+      this.currentLevelButton.click();
+      return true;
+    }
+    return false;
   }
 
   setHtmlEditorText(newHtml) {

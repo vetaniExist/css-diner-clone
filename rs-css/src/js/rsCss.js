@@ -33,10 +33,16 @@ export class RsCss {
   updateCssEditorInput() {
     const inputText = this.layout.getEditorTextInputValue();
     this.layout.setEditorTextInputValue("");
-    this.checkWinCondition(inputText);
+    if (this.checkWinCondition(inputText)) {
+      if (!this.layout.trySetNextCurrentLevelButton()){
+        // it is win
+        console.log("you complete last level");
+      }
+    }
   }
 
   checkWinCondition(inputText) {
+    // rewrite it, array of finding by this input tag should be equals to array Of selected els, not length
     let nodes = [...this.layout.imageBoxContent.childNodes];
 
     ////
@@ -55,7 +61,10 @@ export class RsCss {
     }
     console.log("shound find: ", counterOfElementsToFind);
     console.log("find: ", counterOfFindElements);
-    console.log("you win? ", counterOfElementsToFind === counterOfFindElements);
+
+    const isWin = counterOfElementsToFind === counterOfFindElements;
+    console.log("you win? ", isWin);
+    return isWin;
   }
 
   checkItSelected(node) {
@@ -72,7 +81,7 @@ export class RsCss {
     this.levels.push(level2);
 
     const level3  = new Level("3");
-    level3.configurateLevelFromString(level3, "plate>apple.small,apple");
+    level3.configurateLevelFromString(level3, "plate>apple.small.test33.selected.test1.test2,apple");
     this.levels.push(level3);
 
     const level4  = new Level("4");
