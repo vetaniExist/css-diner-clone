@@ -168,6 +168,11 @@ export class Layout {
   }
 
   initLevelsField(levels) {
+    const levelNameFromStorage = localStorage.getItem("vetaniExist-rs_css-curr_lvl");
+    console.log("loc stor find ");
+    console.log(levelNameFromStorage);
+    console.log(typeof levelNameFromStorage);
+    console.log(typeof levels[1].getLevelName());
     for(let i = 0 ; i < levels.length; i += 1) {
       const levelButton = configurateButton(levels[i].getLevelName());
       levelButton.classList.add("button_level");
@@ -180,14 +185,18 @@ export class Layout {
           this.currentLevelButton.classList.remove("button_level-active");
           this.currentLevelButton = levelButton;
           this.currentLevelButton.classList.add("button_level-active");
+          localStorage.setItem("vetaniExist-rs_css-curr_lvl", levels[i].getLevelName());
 
         } else {
           this.currentLevelButton = levelButton;
           this.currentLevelButton.classList.add("button_level-active");
+          localStorage.setItem("vetaniExist-rs_css-curr_lvl", levels[i].getLevelName());
         }
-        
-
       });
+
+      if (levelNameFromStorage && levelNameFromStorage === levels[i].getLevelName()) {
+        levelButton.click();
+      }
     }
   }
 

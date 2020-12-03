@@ -63,19 +63,19 @@ export class RsCss {
   }
 
   constructLevels() {
-    const level1 = new Level(1);
+    const level1 = new Level("1");
     level1.configurateLevelFromString(level1, "div>apple.small>div,div>test,newtest;div;;div#test>t2,div;te,te;div>hoba>hoba2>test;div,div;div;div");
     this.levels.push(level1);
 
-    const level2 = new Level(2);
+    const level2 = new Level("2");
     level2.configurateLevelFromString(level2, "div>orange");
     this.levels.push(level2);
 
-    const level3  = new Level(3);
+    const level3  = new Level("3");
     level3.configurateLevelFromString(level3, "plate>apple.small,apple");
     this.levels.push(level3);
 
-    const level4  = new Level(4);
+    const level4  = new Level("4");
     level4.configurateLevelFromString(level4, "plate,plate>lemon.selected,lemon.selected");
     this.levels.push(level4);
   }
