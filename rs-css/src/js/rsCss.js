@@ -45,30 +45,48 @@ export class RsCss {
     // rewrite it, array of finding by this input tag should be equals to array Of selected els, not length
     let nodes = [...this.layout.imageBoxContent.childNodes];
 
-    ////
-    let counterOfElementsToFind = 0;
-    ////
-    let counterOfFindElements = 0;
+    let arrayOfElementsToFind = [];
+    let arrayOfFindElements = [];
 
     for (let i = 0; i < nodes.length; i += 1) {
+      console.log("node tag name",nodes[i].tagName);
       nodes = nodes.concat(this.layout.parseNodeForChildren(nodes[i]));
+
+      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].tagName === "TABLE") {
+        continue;
+      }
+
       const isFind = nodes[i].matches(inputText);
 
-      counterOfElementsToFind += this.checkItSelected(nodes[i]);
+      if (this.checkItSelected(nodes[i])) {
+        arrayOfElementsToFind.push(nodes[i]);
+      }
       if (isFind) {
-        counterOfFindElements += this.checkItSelected(nodes[i]);
+        arrayOfFindElements.push(nodes[i]);
       }
     }
-    console.log("shound find: ", counterOfElementsToFind);
-    console.log("find: ", counterOfFindElements);
 
-    const isWin = counterOfElementsToFind === counterOfFindElements;
+    console.log("get this nodes");
+    console.log(nodes);
+
+    const isWin = this.compareArrays(arrayOfElementsToFind, arrayOfFindElements);
+    console.log("arrayOfElementsToFind");
+    console.log(arrayOfElementsToFind);
+    console.log(arrayOfFindElements);
     console.log("you win? ", isWin);
     return isWin;
   }
 
+  compareArrays(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+
+    return arr1.every((el, idx) => el === arr2[idx]);
+  }
+
   checkItSelected(node) {
-    return +(node.className.indexOf("shouldBeSelected") > -1);
+    return (node.className.indexOf("shouldBeSelected") > -1);
   }
 
   constructLevels() {
@@ -77,7 +95,7 @@ export class RsCss {
     this.levels.push(level1);
 
     const level2 = new Level("2");
-    level2.configurateLevelFromString(level2, "div>orange");
+    level2.configurateLevelFromString(level2, "plate.selected,plate.selected");
     this.levels.push(level2);
 
     const level3  = new Level("3");
