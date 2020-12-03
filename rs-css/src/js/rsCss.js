@@ -1,6 +1,5 @@
 import { 
   Layout,
-  createEl
 
 } from "./layout";
 import Level from "./level";
@@ -15,23 +14,49 @@ export class RsCss {
     this.layout.configurateLayout();
     this.initCssEditorEvents();
     this.constructLevels();
-    // this.layout.setHtmlEditorText(this.levels[0].getLevelHtml());
 
     this.layout.initLevelsField(this.levels);
   }
 
   initCssEditorEvents() {
     this.layout.getEditorEnterButton().addEventListener("click", () => {
-      console.log(this.layout.getEditorTextInputValue());
-      this.layout.setEditorTextInputValue("");
+      this.updateCssEditorInput();
     });
 
     this.layout.getEditorTextInput().addEventListener("keypress", (e) => {
       if (e.code === "Enter") {
-        console.log(this.layout.getEditorTextInputValue());
-        this.layout.setEditorTextInputValue("");
+        this.updateCssEditorInput();
       }
     });
+  }
+
+  updateCssEditorInput() {
+    const inputText = this.layout.getEditorTextInputValue();
+    this.layout.setEditorTextInputValue("");
+    
+    let nodes = [...this.layout.imageBoxContent.childNodes];
+
+    ////
+    let counterOfElementsToFind = 0;
+    ////
+    let counterOfFindElements = 0;
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      nodes = nodes.concat(this.layout.parseNodeForChildren(nodes[i]));
+      const isFind = nodes[i].matches(inputText);
+
+      counterOfElementsToFind += this.checkItSelected(nodes[i]);
+      if (isFind) {
+        counterOfFindElements += this.checkItSelected(nodes[i]);
+      }
+    }
+    console.log("shound find: ", counterOfElementsToFind);
+    console.log("find: ", counterOfFindElements);
+    console.log("you win? ", counterOfElementsToFind === counterOfFindElements);
+  }
+
+  checkItSelected(node) {
+    return +(node.className.indexOf("shouldBeSelected") > -1);
   }
 
   constructLevels() {
