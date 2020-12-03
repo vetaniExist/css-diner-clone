@@ -161,6 +161,10 @@
     border: 2px solid wheat;
 }
 
+.button_level-active {
+    background-color: #800000;
+}
+
 table.active {
     max-width: 300px;
     /*max-height: 300px;

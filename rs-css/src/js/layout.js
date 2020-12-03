@@ -46,6 +46,8 @@ export class Layout {
 
     this.rightMenuTitle = createEl("div");
     this.rightMenuLevels = createEl("div");
+    //
+    this.currentLevelButton = null;
 
     this.imageBoxTitle = createEl("div");
     this.imageBoxContent = createEl("div");
@@ -174,6 +176,17 @@ export class Layout {
       levelButton.addEventListener("click", () => {
         this.setHtmlEditorText(levels[i].getLevelHtml());
         this.configurateImageBoxContent(levels[i].getLevelHtml());
+        if (this.currentLevelButton !== null) {
+          this.currentLevelButton.classList.remove("button_level-active");
+          this.currentLevelButton = levelButton;
+          this.currentLevelButton.classList.add("button_level-active");
+
+        } else {
+          this.currentLevelButton = levelButton;
+          this.currentLevelButton.classList.add("button_level-active");
+        }
+        
+
       });
     }
   }
