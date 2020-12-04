@@ -1,40 +1,38 @@
-.main-bg{
+.main-bg {
     background-color: rgba(36, 39, 60, 0.7);
     width: 100vw;
     height: 100vh;
 }
 
-.flex{
+.flex {
     display: flex;
 }
 
-.main-box{
+.main-box {
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.flex-wrap{
+.flex-wrap {
     flex-wrap: wrap;
 }
 
-.gameBox{
+.gameBox {
     background-color: red;
     height: 90vh;
     width: 80vw;
-
     /*text-align: center;*/
     justify-content: center;
 }
 
-.rightMenuBox{
+.rightMenuBox {
     background-color: #171009;
     height: 90vh;
     width: 20vw;
 }
 
-
-.imageBox{
+.imageBox {
     background-color: purple;
     height: 25vh;
     width: 60vw;
@@ -44,9 +42,9 @@
     height: 60vh;
     border: 1px solid yellowgreen;
 }
+
 .cssEditorBox {
     background-color: yellow;
-
     width: 30vw;
 }
 
@@ -55,28 +53,27 @@
     width: 30vw;
     justify-content: space-between;
     align-items: center;
-
     background: rgb(0, 0, 38);
     color: wheat;
 }
 
-.cssEditorContent{
+.cssEditorContent {
     height: 56vh;
 }
 
 .htmlEditorBox {
     background-color: yellowgreen;
-
     width: 30vw;
 }
 
 .editor-line_numeric {
     width: 4vw;
-    background-color: rgb(	190, 190, 190);/* palegoldenrod;*/
+    background-color: rgb( 190, 190, 190);
+    /* palegoldenrod;*/
     text-align: center;
 }
 
-.editor-title{
+.editor-title {
     height: 15px;
     margin: 0 10px;
 }
@@ -86,31 +83,29 @@
     width: inherit;
 }
 
-.editor-text{
+.editor-text {
     width: 21vw;
-    background-color: rgb(	220, 220, 220);/*gainsboro;*/
+    background-color: rgb( 220, 220, 220);
+    /*gainsboro;*/
 }
 
 .editor-text-html {
     width: 26vw;
-    background-color: rgb(	220, 220, 220);
-
+    background-color: rgb( 220, 220, 220);
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
-.editor-enter{
+.editor-enter {
     width: 5vw;
-    background-color: rgb(	220, 220, 220);
+    background-color: rgb( 220, 220, 220);
     justify-content: center;
-    
     padding-top: 5px;
 }
 
-.basic_button{
+.basic_button {
     width: 52px;
     height: 25px;
-
     font-size: 14px;
     font-family: 'Quicksand', sans-serif;
     background: rgba(0, 0, 0, 0);
@@ -118,43 +113,41 @@
     border: 2px solid black;
 }
 
-.css_editor-input_field{
+.css_editor-input_field {
     max-width: 20vw;
     min-width: 1ch;
     background: none;
     border: none;
     outline: none;
-  }
+}
 
-  .showSpaces{
+.showSpaces {
     white-space: pre;
-  }
+}
 
 .block {
     display: block;
     margin: 0;
 }
 
-
 .right_menu-title {
     height: 5vh;
     width: inherit;
     color: wheat;
-
     font-size: 40px;
     justify-content: center;
     align-items: center;
 }
+
 .right_menu-content {
     height: 85vh;
     width: inherit;
     color: wheat;
-
     justify-content: center;
     align-items: center;
 }
 
-.button_level{
+.button_level {
     width: 18vw;
     height: 25px;
     color: wheat;
@@ -175,12 +168,15 @@ table.active {
     background-color: orange;
 }
 
+plate, lemon, apple {
+    position: relative;
+}
+
 plate.active {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: red;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -208,7 +204,6 @@ apple.small.active {
     height: 15px;
 }
 
-
 .image_box-content {
     height: 20vh;
     width: inherit;
@@ -222,34 +217,66 @@ apple.small.active {
 }
 
 @keyframes shouldBeSelected {
-    5% {transform: translateX(1px);}
-    10% {transform: translateX( -1px);}
-    15% {transform: translateX(1px);}
-    20% {transform: translateX(-1px);}
-
-    25% {transform: translateX(1px);}
-    30% {transform: translateX(-1px);}
-
-    35% {transform: translateX(1px);}
-    40% {transform: translateX(-1px);}
-
-    45% {transform: translateX(1px);}
-    50% {transform: translateX(-1px);}
-
-    55% {transform: translateX(1px);}
-    60% {transform: translateX(-1px);}
-
-    65% {transform: translateX(1px);}
-    70% {transform: translateX(-1px);}
-    
-    75% {transform: translateX(1px);}
-    80% {transform: translateX(-1px);}
-
-    85% {transform: translateX(1px);}
-    90% {transform: translateX(-1px);}
-
-    95% {transform: translateX(1px);}
-    100% {transform: translateX(-1px);}
+    5% {
+        transform: translateX(1px);
+    }
+    10% {
+        transform: translateX( -1px);
+    }
+    15% {
+        transform: translateX(1px);
+    }
+    20% {
+        transform: translateX(-1px);
+    }
+    25% {
+        transform: translateX(1px);
+    }
+    30% {
+        transform: translateX(-1px);
+    }
+    35% {
+        transform: translateX(1px);
+    }
+    40% {
+        transform: translateX(-1px);
+    }
+    45% {
+        transform: translateX(1px);
+    }
+    50% {
+        transform: translateX(-1px);
+    }
+    55% {
+        transform: translateX(1px);
+    }
+    60% {
+        transform: translateX(-1px);
+    }
+    65% {
+        transform: translateX(1px);
+    }
+    70% {
+        transform: translateX(-1px);
+    }
+    75% {
+        transform: translateX(1px);
+    }
+    80% {
+        transform: translateX(-1px);
+    }
+    85% {
+        transform: translateX(1px);
+    }
+    90% {
+        transform: translateX(-1px);
+    }
+    95% {
+        transform: translateX(1px);
+    }
+    100% {
+        transform: translateX(-1px);
+    }
 }
 
 .error {
@@ -259,42 +286,73 @@ apple.small.active {
 }
 
 @keyframes errorAnimation {
-    5% {transform: translateX(5px);}
-    10% {transform: translateX( -5px);}
-
-    15% {transform: translateX(5px);}
-    20% {transform: translateX(-5px);}
-
-    25% {transform: translateX(5px);}
-    30% {transform: translateX(-5px);}
-
-    35% {transform: translateX(5px);}
-    40% {transform: translateX(-5px);}
-
-    45% {transform: translateX(5px);}
-    50% {transform: translateX(-5px);}
-
-    55% {transform: translateX(5px);}
-    60% {transform: translateX(-5px);}
-
-    65% {transform: translateX(5px);}
-    70% {transform: translateX(-5px);}
-    
-    75% {transform: translateX(5px);}
-    80% {transform: translateX(-5px);}
-
-    85% {transform: translateX(5px);}
-    90% {transform: translateX(-5px);}
-
-    95% {transform: translateX(5px);}
-    100% {transform: translateX(-5px);}
+    5% {
+        transform: translateX(5px);
+    }
+    10% {
+        transform: translateX( -5px);
+    }
+    15% {
+        transform: translateX(5px);
+    }
+    20% {
+        transform: translateX(-5px);
+    }
+    25% {
+        transform: translateX(5px);
+    }
+    30% {
+        transform: translateX(-5px);
+    }
+    35% {
+        transform: translateX(5px);
+    }
+    40% {
+        transform: translateX(-5px);
+    }
+    45% {
+        transform: translateX(5px);
+    }
+    50% {
+        transform: translateX(-5px);
+    }
+    55% {
+        transform: translateX(5px);
+    }
+    60% {
+        transform: translateX(-5px);
+    }
+    65% {
+        transform: translateX(5px);
+    }
+    70% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+    80% {
+        transform: translateX(-5px);
+    }
+    85% {
+        transform: translateX(5px);
+    }
+    90% {
+        transform: translateX(-5px);
+    }
+    95% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(-5px);
+    }
 }
 
 .win {
     animation-name: winAnimation;
     animation-duration: 0.3s;
     animation-iteration-count: 1;
-    animation-fill-mode:forwards;
+    animation-fill-mode: forwards;
 }
 
 @keyframes winAnimation {
@@ -302,29 +360,54 @@ apple.small.active {
         transform: translateY(-1px);
         opacity: 1;
     }
-
-    to{
+    to {
         transform: translateY(-20px);
         opacity: 0;
     }
 }
 
 /* popup */
-#popup_div{
+
+#popup_div {
     position: fixed;
     display: flex;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  
     width: 200px;
     height: 50px;
     box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
     z-index: 6;
-  
-    background-color:rgb(83, 22, 3);
+    background-color: rgb(83, 22, 3);
     font-size: 30px;
     justify-content: center;
     align-items: center;
     color: wheat;
-  }
+}
+
+.block-info {
+    display: none;
+    position: relative;
+    /*visibility: hidden;*/
+
+
+
+
+}
+
+.block-info-content{
+    width: 180px;
+    height: 25px;
+    position: absolute;
+    
+    transform: translateX(60%);
+    
+    background-color: wheat;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.active-data > .block-info {
+    display: block;
+}
+

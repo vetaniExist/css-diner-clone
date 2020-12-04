@@ -51,6 +51,7 @@ export class Layout {
 
     this.imageBoxTitle = createEl("div");
     this.imageBoxContent = createEl("div");
+    this.imageBoxContentHover = null;
 
     this.popupDiv = createEl("div");
     this.deactivatePopup = null;
@@ -225,6 +226,8 @@ export class Layout {
         nodes.push(curNode);
       } else {
         console.log("text");
+        console.log(curNode.parentNode);
+        console.log(curNode.classList)
         curNode.textContent = "";
       }
     }
@@ -255,18 +258,38 @@ export class Layout {
 
     while (nodes.length) {
       let curNode = nodes.shift();
-      nodes = nodes.concat(this.parseNodeForChildren(curNode));
-      console.log("new nodes");
-      console.log(nodes);
-      console.log("curNode");
-      console.log(curNode.tagName);
-      if (arrOfActivatableElements.includes(curNode.tagName)) {
-        console.log("НАШЛИ ПОЕБОТУ СМЕРТНУЮ");
+      if (![...curNode.classList].includes("block-info")) {
+        nodes = nodes.concat(this.parseNodeForChildren(curNode));
+        console.log("new nodes");
+        console.log(nodes);
+        console.log("curNode");
         console.log(curNode.tagName);
-        curNode.classList.add("active");
-        console.log(curNode);
+        if (arrOfActivatableElements.includes(curNode.tagName)) {
+          console.log(curNode.tagName);
+          curNode.classList.add("active");
+          console.log(curNode);
+        }
+
+        curNode.addEventListener("mouseenter", () => {
+          if (this.imageBoxContentHover) {
+            this.imageBoxContentHover.classList.remove("active-data");
+            this.imageBoxContentHover = curNode;
+            this.imageBoxContentHover.classList.add("active-data");
+            console.log("тутачки2");
+            console.log(this.imageBoxContentHover);
+          } else {
+            this.imageBoxContentHover = curNode;
+            this.imageBoxContentHover.classList.add("active-data");
+            console.log("тутачки");
+            console.log(this.imageBoxContentHover);
+          }
+        });
+        curNode.addEventListener("mouseleave", () => {
+          curNode.classList.remove("active-data");
+        });
+        // curNode.innerText = "";
       }
-      // curNode.innerText = "";
+
     }
 
     // console.log(clone);
