@@ -51,6 +51,9 @@ export class Layout {
 
     this.imageBoxTitle = createEl("div");
     this.imageBoxContent = createEl("div");
+
+    this.popupDiv = createEl("div");
+    this.deactivatePopup = null;
   }
 
   configurateLayout() {
@@ -79,6 +82,7 @@ export class Layout {
     this.mainFlexBox.appendChild(this.rightMenuFlexBox);
 
     this.body.appendChild(this.mainFlexBox);
+    this.configuratePopup();
   }
 
   configurateCssEditor() {
@@ -291,6 +295,43 @@ export class Layout {
 
   getCurrentLevelButton() {
     return this.currentLevelButton;
+  }
+
+  getEditorsBox() {
+    return this.editorsBox;
+  }
+
+  setEditorBoxErrorAnimation() {
+    this.editorsBox.classList.add("error");
+    setTimeout(() => this.editorsBox.classList.remove("error") ,310);
+  }
+
+  addLevelPassAnimation(el) {
+    el.classList.add("win");
+    el.classList.remove("shouldBeSelected");
+    // setTimeout(() => this.editorsBox.classList.remove("win") ,310);
+  }
+
+  tryGetNextLevelButton() {
+    return this.getCurrentLevelButton().nextSibling ? 1 : 0; 
+  }
+
+  configuratePopup() {
+    this.popupDiv.setAttribute("id", "popup_div");
+    this.popupDiv.innerText = "YOUR WIN!";
+  }
+  
+  activatePopup() {
+    this.body.appendChild(this.popupDiv);
+
+    this.deactivatePopup = this.deactivateFunc.bind(this);
+    this.body.addEventListener("click", this.deactivatePopup, false);
+  }
+
+  deactivateFunc() {
+    console.log("it is work");
+    this.body.removeChild(this.popupDiv);
+    this.body.removeEventListener("click",this.deactivatePopup, false);
   }
 
   trySetNextCurrentLevelButton() {

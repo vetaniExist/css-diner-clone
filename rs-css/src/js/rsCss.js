@@ -33,11 +33,25 @@ export class RsCss {
   updateCssEditorInput() {
     const inputText = this.layout.getEditorTextInputValue();
     this.layout.setEditorTextInputValue("");
-    if (this.checkWinCondition(inputText)) {
-      if (!this.layout.trySetNextCurrentLevelButton()){
+    let checkResult = this.checkWinCondition(inputText);
+    if (checkResult[0]) {
+      // if (!this.layout.trySetNextCurrentLevelButton()){
+      if (!this.layout.tryGetNextLevelButton()) {
         // it is win
+        checkResult[2].forEach((el) => this.layout.addLevelPassAnimation(el));
+        setTimeout(() => this.layout.activatePopup(), 315)
+        // this.layout.activatePopup();
         console.log("you complete last level");
+
+        // add level passes counter
+
+      } else {
+        // add win animation
+        checkResult[2].forEach((el) => this.layout.addLevelPassAnimation(el));
+        setTimeout(() => this.layout.trySetNextCurrentLevelButton(), 315)
       }
+    } else {
+      this.layout.setEditorBoxErrorAnimation();
     }
   }
 
@@ -74,7 +88,7 @@ export class RsCss {
     console.log(arrayOfElementsToFind);
     console.log(arrayOfFindElements);
     console.log("you win? ", isWin);
-    return isWin;
+    return [isWin,arrayOfElementsToFind, arrayOfFindElements];
   }
 
   compareArrays(arr1, arr2) {
