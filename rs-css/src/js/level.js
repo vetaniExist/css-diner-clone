@@ -147,15 +147,18 @@ export class Level {
       curTag.appendChild(p);
 
       const curTagName = curTag.tagName.toLowerCase();
-      const infoBlock = createEl("div");
-      const infoContent = createEl("div");
+      if (curTagName !== "table") {
+        const infoBlock = createEl("div");
+        const infoContent = createEl("div");
+  
+        infoBlock.classList.add("block-info");
+        infoContent.classList.add("block-info-content");
+        infoContent.innerText = `<${curTagName}></${curTagName}>`;
+      
+        infoBlock.appendChild(infoContent);
+        curTag.appendChild(infoBlock);
+      }
 
-      infoBlock.classList.add("block-info");
-      infoContent.classList.add("block-info-content");
-      infoContent.innerText = `<${curTagName}></${curTagName}>`;
-    
-      infoBlock.appendChild(infoContent);
-      curTag.appendChild(infoBlock);
     }// 
 
     console.log("result");

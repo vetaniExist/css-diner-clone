@@ -284,8 +284,12 @@ export class Layout {
             console.log(this.imageBoxContentHover);
           }
         });
-        curNode.addEventListener("mouseleave", () => {
-          curNode.classList.remove("active-data");
+        curNode.addEventListener("mouseout", (event) => {
+          this.imageBoxContentHover.classList.remove("active-data");
+          this.imageBoxContentHover = event.relatedTarget ;
+          this.imageBoxContentHover.classList.add("active-data");
+          // curNode.classList.remove("active-data");
+          // this.imageBoxContentHover = null;
         });
         // curNode.innerText = "";
       }
