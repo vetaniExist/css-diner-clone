@@ -11,7 +11,6 @@ function createNode(str, tabs) {
   const tag = str[0];
 
   const newEl = createEl(tag);
-  // newEl.innerText = `<${tag}`;
   newEl.innerText = "\t".repeat(tabs).concat(`<${tag}\n`);
   if (id) {
     newEl.innerText += " id = \"".concat(id).concat("\"");
@@ -21,7 +20,6 @@ function createNode(str, tabs) {
   if (classes.length) {
     if (classes.length === 1 && classes[0] === "selected") {
       newEl.classList.add("shouldBeSelected");
-      // break;
     }
     else {
       newEl.innerText += " class = \"";
@@ -42,7 +40,6 @@ function createNode(str, tabs) {
       }
       newEl.innerText += "\"";
     }
-
   }
   newEl.innerText += ">";
   newEl.classList.add("block");
@@ -51,7 +48,6 @@ function createNode(str, tabs) {
 
 function createCloseTag(str, tabs) {
   const tag = str.split(".")[0].split("#")[0];
-  // console.log("tag ", tag);
   return "\t".repeat(tabs).concat(`</${tag}>`);
 }
 
@@ -81,7 +77,6 @@ export class Level {
     const splitedByBasicDelemeter = str.split(";");
     let tabsCounter = 0;
     const result = createNode("table", 0);
-    // result.classList.add("table");
 
     let resultPrev = {
       curNode: null,
@@ -92,7 +87,7 @@ export class Level {
     let arrayOfClosingTags = [];
     let arrayOfTags = [];
 
-    arrayOfClosingTags.push("</table  >");
+    arrayOfClosingTags.push("</table>");
     arrayOfTags.push(result);
 
     for (let z = 0; z < splitedByBasicDelemeter.length; z += 1) {
@@ -106,7 +101,6 @@ export class Level {
         resultPrev = resultPrev.prevNode;
         continue;
       }
-      console.log(splitedByBasicDelemeter[z]);
       const splitedByDeepLevels = splitedByBasicDelemeter[z].split(">");
 
       for (let i = 0; i < splitedByDeepLevels.length; i += 1) {
@@ -134,8 +128,6 @@ export class Level {
           };
           resultPrev = newResult;
         }
-
-
       }
     }
     // 
@@ -160,11 +152,6 @@ export class Level {
       }
 
     }// 
-
-    console.log("result");
-    console.log(result);
-    console.log("\n\n\n\n\n\n");
-    console.log("\n\n\n\n\n\n");
     return result;
   }
 

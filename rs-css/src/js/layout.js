@@ -176,10 +176,6 @@ export class Layout {
 
   initLevelsField(levels) {
     const levelNameFromStorage = localStorage.getItem("vetaniExist-rs_css-curr_lvl");
-    console.log("loc stor find ");
-    console.log(levelNameFromStorage);
-    console.log(typeof levelNameFromStorage);
-    console.log(typeof levels[1].getLevelName());
     for (let i = 0; i < levels.length; i += 1) {
       const levelButton = configurateButton(levels[i].getLevelName());
       levelButton.classList.add("button_level");
@@ -193,7 +189,6 @@ export class Layout {
           this.currentLevelButton = levelButton;
           this.currentLevelButton.classList.add("button_level-active");
           localStorage.setItem("vetaniExist-rs_css-curr_lvl", levels[i].getLevelName());
-
         } else {
           this.currentLevelButton = levelButton;
           this.currentLevelButton.classList.add("button_level-active");
@@ -234,16 +229,12 @@ export class Layout {
   }
 
   configurateImageBoxContent(htmlObject) {
-    // обойдем все тэги принятого объекта
-    console.log("configurateImageBoxContent");
     let clone = htmlObject.cloneNode(true);
     let nodes = [];
 
     let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
     nodes = nodes.concat(this.parseNodeForChildren(clone));
 
-    console.log("работаем с клоном");
-    console.log(clone.tagName);
     if (arrOfActivatableElements.includes(clone.tagName)) {
       clone.classList.add("active");
     }
@@ -253,25 +244,9 @@ export class Layout {
       let curNodeClone = curNode.cloneNode(true);
       if (![...curNode.classList].includes("block-info")) {
         nodes = nodes.concat(this.parseNodeForChildren(curNode));
-        //console.log("new nodes");
-        //console.log(nodes);
-        //console.log("curNode");
-        //console.log(curNode.tagName);
 
         if (arrOfActivatableElements.includes(curNode.tagName)) {
-          //console.log("а мы тут");
-          //console.log(curNode);
-          //console.log(curNode.tagName);
-          // this.getCopyOfNodeInHtmlEditor(curNode.cloneNode());
-
-          // console.log(curNode.cloneNode(true));
-
           curNode.classList.add("active");
-          console.log(curNode);
-
-          // console.log(curNodeClone.innerHTML);
-          // console.log(cloneOfHtmlEditorCode.innerHTML);
-
           const curNodeInHtmlEditor = this.getNodeCopyInEditor(this.getHtmlEditorInnerCode(), curNodeClone);
   
           curNode.addEventListener("mouseenter", () => {
@@ -279,14 +254,12 @@ export class Layout {
               this.imageBoxContentHover.classList.remove("active-data");
               this.imageBoxContentHover = curNode;
               this.imageBoxContentHover.classList.add("active-data");
-              console.log("тутачки2");
-              console.log(this.imageBoxContentHover);
+
               curNodeInHtmlEditor.classList.add("white");
             } else {
               this.imageBoxContentHover = curNode;
               this.imageBoxContentHover.classList.add("active-data");
-              console.log("тутачки");
-              console.log(this.imageBoxContentHover);
+
               curNodeInHtmlEditor.classList.add("white");
             }
           });
@@ -295,8 +268,6 @@ export class Layout {
             this.imageBoxContentHover.classList.remove("active-data");
             this.imageBoxContentHover = event.relatedTarget;
             this.imageBoxContentHover.classList.add("active-data");
-            // curNode.classList.remove("active-data");
-            // this.imageBoxContentHover = null;
           });
         }
       }
@@ -334,8 +305,6 @@ export class Layout {
   checkNextSiblings(node1, node2) {
     let node1Sibling = node1.nextSibling;
     let node2Sibling = node2.nextSibling;
-
-    console.log("checkNextSiblings");
     
     if (node1Sibling === node2Sibling) {
       if (node1Sibling === null) {
@@ -358,7 +327,6 @@ export class Layout {
   }
 
   getHtmlEditorInnerCode() {
-    console.log(this.htmlEditorText.childNodes[0]);
     return this.htmlEditorText.childNodes[0];
   }
 
@@ -397,7 +365,6 @@ export class Layout {
   addLevelPassAnimation(el) {
     el.classList.add("win");
     el.classList.remove("shouldBeSelected");
-    // setTimeout(() => this.editorsBox.classList.remove("win") ,310);
   }
 
   tryGetNextLevelButton() {
@@ -423,16 +390,10 @@ export class Layout {
   }
 
   trySetNextCurrentLevelButton() {
-    console.log("test");
-    this.currentLevelButton.nextSibling;
-    console.log(this.currentLevelButton);
-    console.log(this.currentLevelButton.nextSibling);
-    console.log("test pass")
     if (this.getCurrentLevelButton().nextSibling) {
       this.currentLevelButton.classList.toggle("button_level-active");
       this.currentLevelButton = this.getCurrentLevelButton().nextSibling;
-      console.log("we here, johny");
-      console.log(this.currentLevelButton);
+
       this.currentLevelButton.click();
       return true;
     }
@@ -440,14 +401,6 @@ export class Layout {
   }
 
   setHtmlEditorText(newHtml) {
-    this.htmlEditorText.innerText = "";
-    console.log("newHtml");
-    console.log(newHtml);
-    console.log(typeof newHtml);
-    let tmpStr = newHtml.textContent.slice();
-
-    console.log(newHtml.textContent)
-    console.log(tmpStr)
     this.htmlEditorText.innerText = "";
     const clone = newHtml.cloneNode(true);
     this.htmlEditorText.appendChild(clone);

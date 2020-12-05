@@ -35,14 +35,11 @@ export class RsCss {
     this.layout.setEditorTextInputValue("");
     let checkResult = this.checkWinCondition(inputText);
     if (checkResult[0]) {
-      // if (!this.layout.trySetNextCurrentLevelButton()){
       if (!this.layout.tryGetNextLevelButton()) {
         // it is win
         checkResult[2].forEach((el) => this.layout.addLevelPassAnimation(el));
         setTimeout(() => this.layout.activatePopup(), 315)
-        // this.layout.activatePopup();
         console.log("you complete last level");
-
         // add level passes counter
 
       } else {
@@ -56,14 +53,12 @@ export class RsCss {
   }
 
   checkWinCondition(inputText) {
-    // rewrite it, array of finding by this input tag should be equals to array Of selected els, not length
     let nodes = [...this.layout.imageBoxContent.childNodes];
 
     let arrayOfElementsToFind = [];
     let arrayOfFindElements = [];
 
     for (let i = 0; i < nodes.length; i += 1) {
-      console.log("node tag name",nodes[i].tagName);
       nodes = nodes.concat(this.layout.parseNodeForChildren(nodes[i]));
 
       if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].tagName === "TABLE" || nodes[i].className.includes("block-info")) {
