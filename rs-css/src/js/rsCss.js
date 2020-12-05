@@ -66,7 +66,7 @@ export class RsCss {
       console.log("node tag name",nodes[i].tagName);
       nodes = nodes.concat(this.layout.parseNodeForChildren(nodes[i]));
 
-      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].tagName === "TABLE") {
+      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].tagName === "TABLE" || nodes[i].className.includes("block-info")) {
         continue;
       }
 
