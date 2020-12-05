@@ -14,6 +14,22 @@ function configurateButton(newInnnerText) {
   return newButton;
 }
 
+class Linking{
+  constructor(key, val) {
+    this.key = key;
+    this.val = val;
+  }
+
+  getKey() {
+    return this.key;
+  }
+
+  getVal() {
+    return this.val;
+  }
+
+}
+
 export class Layout {
   constructor() {
     this.body = document.body;
@@ -51,6 +67,7 @@ export class Layout {
 
     this.imageBoxTitle = createEl("div");
     this.imageBoxContent = createEl("div");
+    this.linkBetweenImageContentAndHtmlEditorContent = [];
     this.imageBoxContentHover = null;
     this.htmlEditorContentHover = null;
 
@@ -251,6 +268,24 @@ export class Layout {
           curNode.classList.add("active");
           const curNodeInHtmlEditor = htmlEditor[idx];
 
+          let linking = new Linking(curNode, curNodeInHtmlEditor);
+          const pTags = this.getChildWithPTag(curNodeInHtmlEditor);
+          this.linkBetweenImageContentAndHtmlEditorContent.push(linking);
+          let htmlFullLinking = new Linking(curNodeInHtmlEditor, curNodeInHtmlEditor);
+          this.linkBetweenImageContentAndHtmlEditorContent.push(htmlFullLinking);
+
+
+          for (let i = 0 ; i < pTags.length; i += 1) {
+            let htmlFullLinking = new Linking(curNode, pTags[i]);
+            this.linkBetweenImageContentAndHtmlEditorContent.push(htmlFullLinking);
+          }
+
+
+
+          // this.linkBetweenImageContentAndHtmlEditorContent[curNode] = curNodeInHtmlEditor;
+          // this.linkBetweenImageContentAndHtmlEditorContent.push(curNode);
+          // this.linkBetweenImageContentAndHtmlEditorContent.push(curNodeInHtmlEditor)
+
           curNode.addEventListener("mouseenter", () => {
             this.imageHoverOn(curNode, curNodeInHtmlEditor);
           });
@@ -270,7 +305,48 @@ export class Layout {
 
     this.imageBoxContent.innerText = "";
     this.imageBoxContent.appendChild(clone);
+
+    // console.log(this.linkBetweenImageContentAndHtmlEditorContent);
+
+    for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
+      console.log(this.linkBetweenImageContentAndHtmlEditorContent[i]);
+    }
+    console.log('nen')
   }
+
+  getChildWithPTag(node) {
+    let nodes = [];
+    let pTagNodes = [];
+    nodes = nodes.concat(this.parseNodeForChildren(node,true));
+    for (let i = 0; i < nodes.length; i += 1) {
+      // nodes = nodes.concat(this.parseNodeForChildren(nodes[i],true));
+      if (nodes[i].tagName === "P") {
+        pTagNodes.push(nodes[i]);
+      }
+    }
+    return pTagNodes;
+  }
+
+  getLinking(key) {
+    for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
+      if (this.linkBetweenImageContentAndHtmlEditorContent[i].key === key) {
+        console.log("find");
+        return this.linkBetweenImageContentAndHtmlEditorContent[i].val;
+      }
+    }
+    return null
+  }
+
+  getLinkingByVal(val) {
+    for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
+      if (this.linkBetweenImageContentAndHtmlEditorContent[i].val === val) {
+        console.log("find");
+        return this.linkBetweenImageContentAndHtmlEditorContent[i].key;
+      }
+    }
+    return null
+  }
+  
 
   imageHoverOn(curNode, curNodeInHtmlEditor) {
     if (this.imageBoxContentHover) {
@@ -280,23 +356,46 @@ export class Layout {
       this.imageBoxContentHover.classList.add("active-data");
       this.imageBoxContentHover.classList.add("shadow");
 
-      curNodeInHtmlEditor.classList.add("white");
+      // curNodeInHtmlEditor.classList.add("white");
     } else {
-      this.imageBoxContentHover = curNode;
-      this.imageBoxContentHover.classList.add("active-data");
-      this.imageBoxContentHover.classList.add("shadow");
-
-      curNodeInHtmlEditor.classList.add("white");
+      if (curNode.classList.contains("active")) {
+        this.imageBoxContentHover = curNode;
+        this.imageBoxContentHover.classList.add("active-data");
+        this.imageBoxContentHover.classList.add("shadow");
+      }
     }
+    curNodeInHtmlEditor.classList.add("white");
   }
   
   imageHoverOut(event, curNodeInHtmlEditor) {
     curNodeInHtmlEditor.classList.remove("white");
     this.imageBoxContentHover.classList.remove("active-data");
     this.imageBoxContentHover.classList.remove("shadow");
-    this.imageBoxContentHover = event.relatedTarget;
-    this.imageBoxContentHover.classList.add("active-data");
-    this.imageBoxContentHover.classList.add("shadow");
+
+    let curLink = this.getLinkingByVal(event.relatedTarget);
+    this.imageBoxContentHover = (curLink);
+
+    console.log("we here");
+    // console.log(event.relatedTarget);
+    // console.log(curLink)
+    if (curLink !== null) {
+      console.log("we here2");
+      console.log("linking");
+      console.log(this.imageBoxContentHover);
+      console.log(curLink);
+      // curNodeInHtmlEditor.classList.remove("white");
+      curNodeInHtmlEditor = this.getLinking(curLink);
+      // curNodeInHtmlEditor = curLink;
+      // curNodeInHtmlEditor.classList.remove("white");
+      curNodeInHtmlEditor.classList.add("white");
+
+      console.log("\n\n\n\n\n\n");
+    }
+
+    // if (this.imageBoxContentHover.classList.contains("active")) {
+      this.imageBoxContentHover.classList.add("active-data");
+      this.imageBoxContentHover.classList.add("shadow");
+    // }
   }
 
   getAllNodes(node) {
@@ -304,8 +403,7 @@ export class Layout {
     nodes = this.parseNodeForChildren(node);
     for (let i = 0; i < nodes.length; i += 1) {
       let curNode = nodes[i];
-      const classes = [...curNode.classList];
-      // if( curNode.tagName !== "P" && !classes.includes("block-info") && !classes.includes("block-info-content")) { 
+      // const classes = [...curNode.classList];
       nodes = nodes.concat(this.parseNodeForChildren(curNode, true));
       //  }
     }
