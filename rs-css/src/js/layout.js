@@ -222,7 +222,10 @@ export class Layout {
       if (curNode.nodeType !== Node.TEXT_NODE) {
         nodes.push(curNode);
       } else if (!shouldSafe) {
-        curNode.textContent = "";
+        const classes = [...curNode.parentNode.classList];
+        if (!classes.includes("block-info-content")) {
+          curNode.textContent = "";
+        }
       }
     }
     return nodes;
@@ -230,6 +233,7 @@ export class Layout {
 
   configurateImageBoxContent(htmlObject) {
     let clone = htmlObject.cloneNode(true);
+    let htmlEditor = this.getAllNodes(this.getHtmlEditorInnerCode());
     let nodes = [];
 
     let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
@@ -238,17 +242,16 @@ export class Layout {
     if (arrOfActivatableElements.includes(clone.tagName)) {
       clone.classList.add("active");
     }
-
+    let idx = 0;
     while (nodes.length) {
       let curNode = nodes.shift();
-      let curNodeClone = curNode.cloneNode(true);
-      if (![...curNode.classList].includes("block-info")) {
-        nodes = nodes.concat(this.parseNodeForChildren(curNode));
+      nodes = nodes.concat(this.parseNodeForChildren(curNode));
 
+      if (![...curNode.classList].includes("block-info")) {
         if (arrOfActivatableElements.includes(curNode.tagName)) {
           curNode.classList.add("active");
-          const curNodeInHtmlEditor = this.getNodeCopyInEditor(this.getHtmlEditorInnerCode(), curNodeClone);
-  
+          const curNodeInHtmlEditor = htmlEditor[idx];
+
           curNode.addEventListener("mouseenter", () => {
             if (this.imageBoxContentHover) {
               this.imageBoxContentHover.classList.remove("active-data");
@@ -271,20 +274,23 @@ export class Layout {
           });
         }
       }
+      idx += 1;
 
     }
 
     this.imageBoxContent.innerText = "";
     this.imageBoxContent.appendChild(clone);
-
   }
 
   getAllNodes(node) {
     let nodes = []
-    nodes = this.parseNodeForChildren(node, true);
+    nodes = this.parseNodeForChildren(node);
     for (let i = 0; i < nodes.length; i += 1) {
-      let curNode = nodes[i]
+      let curNode = nodes[i];
+      const classes = [...curNode.classList];
+      // if( curNode.tagName !== "P" && !classes.includes("block-info") && !classes.includes("block-info-content")) { 
       nodes = nodes.concat(this.parseNodeForChildren(curNode, true));
+      //  }
     }
     return nodes;
   }
@@ -305,7 +311,7 @@ export class Layout {
   checkNextSiblings(node1, node2) {
     let node1Sibling = node1.nextSibling;
     let node2Sibling = node2.nextSibling;
-    
+
     if (node1Sibling === node2Sibling) {
       if (node1Sibling === null) {
         return true
@@ -324,6 +330,10 @@ export class Layout {
     } else {
       return false;
     }
+  }
+
+  getImageEditorInnerCode() {
+    return this.imageBoxContent.childNodes[0];
   }
 
   getHtmlEditorInnerCode() {
