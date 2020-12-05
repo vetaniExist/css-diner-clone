@@ -55,6 +55,8 @@ export class Layout {
 
     this.popupDiv = createEl("div");
     this.deactivatePopup = null;
+
+    this.curNodeInHtmlEditor = null;
   }
 
   configurateLayout() {
@@ -126,8 +128,8 @@ export class Layout {
     this.cssEditorTextInput.setAttribute("placeholder", "input your code here");
 
     this.cssEditorTextInfo.innerText = "{\n"
-    + "*Styles would go here*"
-    + "\n}";
+      + "*Styles would go here*"
+      + "\n}";
 
     this.cssEditorText.appendChild(this.cssEditorTextInput);
     this.cssEditorText.appendChild(this.cssEditorTextInfo);
@@ -178,7 +180,7 @@ export class Layout {
     console.log(levelNameFromStorage);
     console.log(typeof levelNameFromStorage);
     console.log(typeof levels[1].getLevelName());
-    for(let i = 0 ; i < levels.length; i += 1) {
+    for (let i = 0; i < levels.length; i += 1) {
       const levelButton = configurateButton(levels[i].getLevelName());
       levelButton.classList.add("button_level");
       this.rightMenuLevels.appendChild(levelButton);
@@ -216,25 +218,18 @@ export class Layout {
     this.imageBox.appendChild(this.imageBoxContent);
   }
 
-  parseNodeForChildren(node) {
+  parseNodeForChildren(node, shouldSafe) {
     let clone = node;
-    console.log("clone" , clone);
     let nodes = [];
+
     for (let i = 0; i < clone.childNodes.length; i += 1) {
       const curNode = clone.childNodes[i];
       if (curNode.nodeType !== Node.TEXT_NODE) {
         nodes.push(curNode);
-      } else {
-        console.log("text");
-        console.log(curNode.parentNode);
-        console.log(curNode.classList)
+      } else if (!shouldSafe) {
         curNode.textContent = "";
       }
     }
-    
-
-    console.log("return");
-    console.log(nodes);
     return nodes;
   }
 
@@ -242,9 +237,6 @@ export class Layout {
     // обойдем все тэги принятого объекта
     console.log("configurateImageBoxContent");
     let clone = htmlObject.cloneNode(true);
-    console.log("startClone");
-    console.log(clone.cloneNode(true));
-    console.log(clone);
     let nodes = [];
 
     let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
@@ -258,47 +250,116 @@ export class Layout {
 
     while (nodes.length) {
       let curNode = nodes.shift();
+      let curNodeClone = curNode.cloneNode(true);
       if (![...curNode.classList].includes("block-info")) {
         nodes = nodes.concat(this.parseNodeForChildren(curNode));
-        console.log("new nodes");
-        console.log(nodes);
-        console.log("curNode");
-        console.log(curNode.tagName);
+        //console.log("new nodes");
+        //console.log(nodes);
+        //console.log("curNode");
+        //console.log(curNode.tagName);
+
         if (arrOfActivatableElements.includes(curNode.tagName)) {
-          console.log(curNode.tagName);
+          //console.log("а мы тут");
+          //console.log(curNode);
+          //console.log(curNode.tagName);
+          // this.getCopyOfNodeInHtmlEditor(curNode.cloneNode());
+
+          // console.log(curNode.cloneNode(true));
+
           curNode.classList.add("active");
           console.log(curNode);
-        }
 
-        curNode.addEventListener("mouseenter", () => {
-          if (this.imageBoxContentHover) {
+          // console.log(curNodeClone.innerHTML);
+          // console.log(cloneOfHtmlEditorCode.innerHTML);
+
+          const curNodeInHtmlEditor = this.getNodeCopyInEditor(this.getHtmlEditorInnerCode(), curNodeClone);
+  
+          curNode.addEventListener("mouseenter", () => {
+            if (this.imageBoxContentHover) {
+              this.imageBoxContentHover.classList.remove("active-data");
+              this.imageBoxContentHover = curNode;
+              this.imageBoxContentHover.classList.add("active-data");
+              console.log("тутачки2");
+              console.log(this.imageBoxContentHover);
+              curNodeInHtmlEditor.classList.add("white");
+            } else {
+              this.imageBoxContentHover = curNode;
+              this.imageBoxContentHover.classList.add("active-data");
+              console.log("тутачки");
+              console.log(this.imageBoxContentHover);
+              curNodeInHtmlEditor.classList.add("white");
+            }
+          });
+          curNode.addEventListener("mouseout", (event) => {
+            curNodeInHtmlEditor.classList.remove("white");
             this.imageBoxContentHover.classList.remove("active-data");
-            this.imageBoxContentHover = curNode;
+            this.imageBoxContentHover = event.relatedTarget;
             this.imageBoxContentHover.classList.add("active-data");
-            console.log("тутачки2");
-            console.log(this.imageBoxContentHover);
-          } else {
-            this.imageBoxContentHover = curNode;
-            this.imageBoxContentHover.classList.add("active-data");
-            console.log("тутачки");
-            console.log(this.imageBoxContentHover);
-          }
-        });
-        curNode.addEventListener("mouseout", (event) => {
-          this.imageBoxContentHover.classList.remove("active-data");
-          this.imageBoxContentHover = event.relatedTarget ;
-          this.imageBoxContentHover.classList.add("active-data");
-          // curNode.classList.remove("active-data");
-          // this.imageBoxContentHover = null;
-        });
-        // curNode.innerText = "";
+            // curNode.classList.remove("active-data");
+            // this.imageBoxContentHover = null;
+          });
+        }
       }
 
     }
 
-    // console.log(clone);
     this.imageBoxContent.innerText = "";
     this.imageBoxContent.appendChild(clone);
+
+  }
+
+  getAllNodes(node) {
+    let nodes = []
+    nodes = this.parseNodeForChildren(node, true);
+    for (let i = 0; i < nodes.length; i += 1) {
+      let curNode = nodes[i]
+      nodes = nodes.concat(this.parseNodeForChildren(curNode, true));
+    }
+    return nodes;
+  }
+
+  getNodeCopyInEditor(editor, node) {
+    let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
+    if (arrOfActivatableElements.includes(node.tagName)) {
+      let editorNodes = this.getAllNodes(editor);
+      for (let i = 0; i < editorNodes.length; i += 1) {
+        if (editorNodes[i].isEqualNode(node)) {
+          return editorNodes[i];
+        }
+      }
+    }
+    return false;
+  }
+
+  checkNextSiblings(node1, node2) {
+    let node1Sibling = node1.nextSibling;
+    let node2Sibling = node2.nextSibling;
+
+    console.log("checkNextSiblings");
+    
+    if (node1Sibling === node2Sibling) {
+      if (node1Sibling === null) {
+        return true
+      }
+      while (true) {
+        node1Sibling = node1Sibling.nextSibling;
+        node2Sibling = node2Sibling.nextSibling
+
+        if (node1Sibling !== node2Sibling) {
+          return false
+        }
+        if (node1Sibling === null) {
+          return true;
+        }
+      }
+    } else {
+      return false;
+    }
+  }
+
+  getHtmlEditorInnerCode() {
+    console.log(this.htmlEditorText.childNodes[0]);
+    return this.htmlEditorText.childNodes[0];
   }
 
   setImageBoxTitle(str) {
@@ -309,7 +370,7 @@ export class Layout {
     return this.cssEditorEnterButton;
   }
   getEditorTextInput() {
-    return  this.cssEditorTextInput;
+    return this.cssEditorTextInput;
   }
 
   getEditorTextInputValue() {
@@ -330,7 +391,7 @@ export class Layout {
 
   setEditorBoxErrorAnimation() {
     this.editorsBox.classList.add("error");
-    setTimeout(() => this.editorsBox.classList.remove("error") ,310);
+    setTimeout(() => this.editorsBox.classList.remove("error"), 310);
   }
 
   addLevelPassAnimation(el) {
@@ -340,14 +401,14 @@ export class Layout {
   }
 
   tryGetNextLevelButton() {
-    return this.getCurrentLevelButton().nextSibling ? 1 : 0; 
+    return this.getCurrentLevelButton().nextSibling ? 1 : 0;
   }
 
   configuratePopup() {
     this.popupDiv.setAttribute("id", "popup_div");
     this.popupDiv.innerText = "YOUR WIN!";
   }
-  
+
   activatePopup() {
     this.body.appendChild(this.popupDiv);
 
@@ -358,7 +419,7 @@ export class Layout {
   deactivateFunc() {
     console.log("it is work");
     this.body.removeChild(this.popupDiv);
-    this.body.removeEventListener("click",this.deactivatePopup, false);
+    this.body.removeEventListener("click", this.deactivatePopup, false);
   }
 
   trySetNextCurrentLevelButton() {
