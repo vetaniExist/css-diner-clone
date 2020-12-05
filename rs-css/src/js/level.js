@@ -11,9 +11,12 @@ function createNode(str, tabs) {
   const tag = str[0];
 
   const newEl = createEl(tag);
-  newEl.innerText = "\t".repeat(tabs).concat(`<${tag}\n`);
+  const p = createEl("p");
+  p.setAttribute("class", "block");
+  p.innerText = "\t".repeat(tabs).concat(`<${tag}\n`);
+  newEl.appendChild(p);
   if (id) {
-    newEl.innerText += " id = \"".concat(id).concat("\"");
+    p.innerText += " id = \"".concat(id).concat("\"");
     newEl.setAttribute("id", id);
   }
 
@@ -22,26 +25,26 @@ function createNode(str, tabs) {
       newEl.classList.add("shouldBeSelected");
     }
     else {
-      newEl.innerText += " class = \"";
+      p.innerText += " class = \"";
       for (let i = 0; i < classes.length; i += 1) {
         if ( classes[i] === "selected") {
           newEl.classList.add("shouldBeSelected");
           if ( i === classes.length - 1) {
             let inText = newEl.innerText;
-            newEl.innerText = inText.substring(0, inText.length - 1);
+            p.innerText = inText.substring(0, inText.length - 1);
           }
         } else {
-          newEl.innerText += `${classes[i]}`;
+          p.innerText += `${classes[i]}`;
           newEl.classList.add(classes[i]);
           if (i !== classes.length - 1) {
-            newEl.innerText += " ";
+            p.innerText += " ";
           }
         }
       }
-      newEl.innerText += "\"";
+      p.innerText += "\"";
     }
   }
-  newEl.innerText += ">";
+  p.innerText += ">";
   newEl.classList.add("block");
   return newEl;
 }
