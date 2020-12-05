@@ -52,11 +52,10 @@ export class Layout {
     this.imageBoxTitle = createEl("div");
     this.imageBoxContent = createEl("div");
     this.imageBoxContentHover = null;
+    this.htmlEditorContentHover = null;
 
     this.popupDiv = createEl("div");
     this.deactivatePopup = null;
-
-    this.curNodeInHtmlEditor = null;
   }
 
   configurateLayout() {
@@ -253,24 +252,15 @@ export class Layout {
           const curNodeInHtmlEditor = htmlEditor[idx];
 
           curNode.addEventListener("mouseenter", () => {
-            if (this.imageBoxContentHover) {
-              this.imageBoxContentHover.classList.remove("active-data");
-              this.imageBoxContentHover = curNode;
-              this.imageBoxContentHover.classList.add("active-data");
-
-              curNodeInHtmlEditor.classList.add("white");
-            } else {
-              this.imageBoxContentHover = curNode;
-              this.imageBoxContentHover.classList.add("active-data");
-
-              curNodeInHtmlEditor.classList.add("white");
-            }
+            this.imageHoverOn(curNode, curNodeInHtmlEditor);
           });
           curNode.addEventListener("mouseout", (event) => {
-            curNodeInHtmlEditor.classList.remove("white");
-            this.imageBoxContentHover.classList.remove("active-data");
-            this.imageBoxContentHover = event.relatedTarget;
-            this.imageBoxContentHover.classList.add("active-data");
+            this.imageHoverOut(event, curNodeInHtmlEditor);
+          });
+
+          curNodeInHtmlEditor.addEventListener("mouseenter", () => {this.imageHoverOn(curNode, curNodeInHtmlEditor)});
+          curNodeInHtmlEditor.addEventListener("mouseout", (event) => {
+            this.imageHoverOut(event, curNodeInHtmlEditor);
           });
         }
       }
@@ -280,6 +270,33 @@ export class Layout {
 
     this.imageBoxContent.innerText = "";
     this.imageBoxContent.appendChild(clone);
+  }
+
+  imageHoverOn(curNode, curNodeInHtmlEditor) {
+    if (this.imageBoxContentHover) {
+      this.imageBoxContentHover.classList.remove("active-data");
+      this.imageBoxContentHover.classList.remove("shadow");
+      this.imageBoxContentHover = curNode;
+      this.imageBoxContentHover.classList.add("active-data");
+      this.imageBoxContentHover.classList.add("shadow");
+
+      curNodeInHtmlEditor.classList.add("white");
+    } else {
+      this.imageBoxContentHover = curNode;
+      this.imageBoxContentHover.classList.add("active-data");
+      this.imageBoxContentHover.classList.add("shadow");
+
+      curNodeInHtmlEditor.classList.add("white");
+    }
+  }
+  
+  imageHoverOut(event, curNodeInHtmlEditor) {
+    curNodeInHtmlEditor.classList.remove("white");
+    this.imageBoxContentHover.classList.remove("active-data");
+    this.imageBoxContentHover.classList.remove("shadow");
+    this.imageBoxContentHover = event.relatedTarget;
+    this.imageBoxContentHover.classList.add("active-data");
+    this.imageBoxContentHover.classList.add("shadow");
   }
 
   getAllNodes(node) {
