@@ -50,6 +50,7 @@ export class Layout {
     this.cssEditorText = createEl("div");
     this.cssEditorEnter = createEl("div");
     this.cssEditorEnterButton = configurateButton("enter");
+    this.cssEditorHelpButton = configurateButton("help");
 
     this.cssEditorTextInput = createEl("input");
     this.cssEditorTextInfo = createEl("p");
@@ -73,6 +74,8 @@ export class Layout {
 
     this.popupDiv = createEl("div");
     this.deactivatePopup = null;
+
+    this.helpText = null;
   }
 
   configurateLayout() {
@@ -112,7 +115,7 @@ export class Layout {
 
     this.cssEditorLineNumeric.setAttribute("class", "flex flex-wrap editor-line_numeric");
     this.cssEditorText.setAttribute("class", "editor-text");
-    this.cssEditorEnter.setAttribute("class", "flex editor-enter");
+    this.cssEditorEnter.setAttribute("class", "flex flex-wrap editor-enter");
 
     this.cssEditorBox.appendChild(this.cssEditorCaptions);
     this.cssEditorBox.appendChild(this.cssEditorContent);
@@ -135,7 +138,29 @@ export class Layout {
 
     this.fillLineNumeric(this.cssEditorLineNumeric);
     this.cssEditorEnter.appendChild(this.cssEditorEnterButton);
+    this.cssEditorEnter.appendChild(this.cssEditorHelpButton);
     this.addTextInCssEditor();
+    this.activateHelpButton();
+  }
+
+  activateHelpButton() {
+    this.cssEditorHelpButton.addEventListener("click", () => {
+      console.log("help");
+      this.cssEditorTextInput.value = "";
+      const charHelpTextArray = this.helpText.split("");
+      let iter = 0;
+      this.cssEditorTextInput.focus();
+      let timer = setInterval(() => {
+        if (iter >= charHelpTextArray.length) {
+          clearInterval(timer);
+          return;
+        }
+        this.cssEditorTextInput.value += charHelpTextArray[iter];
+        iter += 1;
+        this.cssEditorTextInput.setSelectionRange(iter, iter);
+      }, 300);
+
+    });
   }
 
   addTextInCssEditor() {
@@ -204,10 +229,12 @@ export class Layout {
           this.currentLevelButton.classList.remove("button_level-active");
           this.currentLevelButton = levelButton;
           this.currentLevelButton.classList.add("button_level-active");
+          this.helpText = levels[i].getHelp();
           localStorage.setItem("vetaniExist-rs_css-curr_lvl", levels[i].getLevelName());
         } else {
           this.currentLevelButton = levelButton;
           this.currentLevelButton.classList.add("button_level-active");
+          this.helpText = levels[i].getHelp();
           localStorage.setItem("vetaniExist-rs_css-curr_lvl", levels[i].getLevelName());
         }
       });
@@ -462,6 +489,11 @@ export class Layout {
   getEditorEnterButton() {
     return this.cssEditorEnterButton;
   }
+
+  getEditorHelpButton() {
+    return this.cssEditorHelpButton;
+  }
+
   getEditorTextInput() {
     return this.cssEditorTextInput;
   }

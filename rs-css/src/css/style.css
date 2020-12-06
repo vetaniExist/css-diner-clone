@@ -59,6 +59,7 @@
 
 .cssEditorContent {
     height: 56vh;
+    background-color: rgb( 220, 220, 220);
 }
 
 .htmlEditorBox {
@@ -85,20 +86,18 @@
 
 .editor-text {
     width: 21vw;
-    background-color: rgb( 220, 220, 220);
     /*gainsboro;*/
 }
 
 .editor-text-html {
     width: 26vw;
-    background-color: rgb( 220, 220, 220);
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
 .editor-enter {
     width: 5vw;
-    background-color: rgb( 220, 220, 220);
+    height: 100px;
     justify-content: center;
     padding-top: 5px;
 }

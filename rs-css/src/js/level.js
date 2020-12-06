@@ -58,6 +58,7 @@ export class Level {
   constructor(levelName) {
     this.levelHtml = null;
     this.levelName = levelName;
+    this.help = null;
   }
 
   setLevelName(newLevelName) {
@@ -74,6 +75,14 @@ export class Level {
 
   getLevelHtml() {
     return this.levelHtml;
+  }
+
+  setHelp(newHelp) {
+    this.help = newHelp;
+  }
+
+  getHelp() {
+    return this.help;
   }
 
   parseTemplateString(str) {
