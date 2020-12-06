@@ -44,6 +44,7 @@ export class RsCss {
 
       } else {
         // add win animation
+        this.layout.addMarkLevelPasses();
         checkResult[2].forEach((el) => this.layout.addLevelPassAnimation(el));
         setTimeout(() => this.layout.trySetNextCurrentLevelButton(), 315)
       }

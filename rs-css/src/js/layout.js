@@ -62,6 +62,9 @@ export class Layout {
     this.htmlEditorText = createEl("div");
 
     this.rightMenuTitle = createEl("div");
+    this.rightMenuContent = createEl("div");
+    this.rightMenuFunctionalButtons = createEl("div");
+    this.rightMenuFunctuonalButtonRestore = configurateButton("Restore Progress")
     this.rightMenuLevels = createEl("div");
     //
     this.currentLevelButton = null;
@@ -149,6 +152,7 @@ export class Layout {
       this.cssEditorTextInput.value = "";
       const charHelpTextArray = this.helpText.split("");
       let iter = 0;
+      this.addMarkLevelPassesWithHelp();
       this.cssEditorTextInput.focus();
       let timer = setInterval(() => {
         if (iter >= charHelpTextArray.length) {
@@ -207,18 +211,29 @@ export class Layout {
   }
 
   configurateRightMenu() {
+    this.rightMenuContent.setAttribute("class", "flex flex-wrap right_menu-content");
+
     this.rightMenuTitle.setAttribute("class", "flex right_menu-title");
-    this.rightMenuLevels.setAttribute("class", "flex flex-wrap right_menu-content");
     this.rightMenuTitle.innerText = "Levels";
 
+    this.rightMenuFunctionalButtons.setAttribute("class", "flex flex-wrap right_menu-functional_buttons");
+    this.rightMenuLevels.setAttribute("class", "flex flex-wrap right_menu-levels");
+
+    this.rightMenuFunctionalButtons.appendChild(this.rightMenuFunctuonalButtonRestore);
+    this.rightMenuFunctuonalButtonRestore.classList.add("button_level");
+
+    this.rightMenuContent.appendChild(this.rightMenuFunctionalButtons);
+    this.rightMenuContent.appendChild(this.rightMenuLevels);
+
     this.rightMenuFlexBox.appendChild(this.rightMenuTitle);
-    this.rightMenuFlexBox.appendChild(this.rightMenuLevels);
+    this.rightMenuFlexBox.appendChild(this.rightMenuContent);
   }
 
   initLevelsField(levels) {
     const levelNameFromStorage = localStorage.getItem("vetaniExist-rs_css-curr_lvl");
     for (let i = 0; i < levels.length; i += 1) {
       const levelButton = configurateButton(levels[i].getLevelName());
+
       levelButton.classList.add("button_level");
       this.rightMenuLevels.appendChild(levelButton);
 
@@ -243,6 +258,29 @@ export class Layout {
         levelButton.click();
       }
     }
+  }
+
+  addMarkLevelPasses() {
+
+    if (!(this.currentLevelButton.innerText.indexOf("✔") > -1)) {
+      const span = createEl("span");
+      span.textContent = "✔";
+      span.setAttribute("class", "green");
+      console.log("cur level length");
+      console.log(this.currentLevelButton.innerText.indexOf("✔") > -1);
+      this.currentLevelButton.appendChild(span);
+    }
+
+  }
+
+  addMarkLevelPassesWithHelp() {
+    if (!this.currentLevelButton.innerText.indexOf("✔") > -1 && !this.currentLevelButton.innerText.indexOf("🗸") > -1) {
+      const span = createEl("span");
+      span.textContent = "🗸";
+      span.setAttribute("class", "blue");
+      this.currentLevelButton.appendChild(span);
+    }
+
   }
 
   initImageBox() {

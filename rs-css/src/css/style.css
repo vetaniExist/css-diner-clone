@@ -146,6 +146,17 @@
     align-items: center;
 }
 
+.right_menu-functional_buttons {
+    height: 10vh;
+    width: inherit;
+    justify-content: inherit;
+}
+
+.right_menu-levels {
+    height: 75vh;
+    justify-content: inherit;
+}
+
 .button_level {
     width: 18vw;
     height: 25px;
@@ -420,6 +431,14 @@ apple.small.active {
 
 .white {
     color: white;
+}
+
+.blue {
+    color: blue;
+}
+
+.green {
+    color: green;
 }
 
 lemon.active.shadow, apple.active.shadow, plate.active.shadow {
