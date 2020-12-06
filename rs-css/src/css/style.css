@@ -171,6 +171,18 @@ table.active {
 plate, lemon, apple {
     position: relative;
 }
+table {
+    color: orange;
+}
+apple {
+    color: green;
+}
+plate {
+    color: red;
+}
+lemon{
+    color: yellowgreen;
+}
 
 plate.active {
     width: 50px;
