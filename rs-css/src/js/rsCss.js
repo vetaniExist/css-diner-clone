@@ -102,7 +102,12 @@ export class RsCss {
         nodes[i].parentNode.removeChild(nodes[i]);
         iter += 1;
       } else {
-        const isFind = nodes[i].matches(inputText);
+        let isFind;
+        try {
+          isFind = nodes[i].matches(inputText);
+        } catch (err) {
+          return [false, arrayOfElementsToFind, arrayOfFindElements];
+        }
 
         if (checkItSelected(nodes[i])) {
           arrayOfElementsToFind.push(basicNodes[iter]);
