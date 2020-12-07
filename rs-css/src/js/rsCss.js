@@ -70,7 +70,8 @@ export class RsCss {
   }
 
   checkWinCondition(inputText) {
-    let nodes = [...this.layout.imageBoxContent.childNodes];
+    let clone = this.layout.imageBoxContent.childNodes[0];
+    let nodes =  [...clone.childNodes];
 
     let arrayOfElementsToFind = [];
     let arrayOfFindElements = [];
@@ -78,11 +79,17 @@ export class RsCss {
     for (let i = 0; i < nodes.length; i += 1) {
       nodes = nodes.concat(this.layout.parseNodeForChildren(nodes[i]));
 
-      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" /*|| nodes[i].tagName === "TABLE" */|| nodes[i].className.includes("block-info")) {
+      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].tagName === "TABLE" || nodes[i].className.includes("block-info")) {
+        // nodes[i].innerText = "";
+        console.log("parent");
+        console.log(nodes[i].parentNode);
+        nodes[i].parentNode.removeChild(nodes[i]);
         continue;
       }
 
       const isFind = nodes[i].matches(inputText);
+      console.log("смотрим");
+      console.log(nodes[i]);
 
       if (this.checkItSelected(nodes[i])) {
         arrayOfElementsToFind.push(nodes[i]);
@@ -100,6 +107,7 @@ export class RsCss {
     console.log(arrayOfElementsToFind);
     console.log(arrayOfFindElements);
     console.log("you win? ", isWin);
+    console.log(clone);
     return [isWin, arrayOfElementsToFind, arrayOfFindElements];
   }
 
@@ -159,7 +167,7 @@ export class RsCss {
 
     const level7 = new Level("7");
     level7.configurateLevelFromString(level7, "plate>apple,apple.selected");
-    level7.setHelp("apple:nth-child(3)");
+    level7.setHelp("apple:nth-child(3)");// plate :last-child
     this.levels.push(level7);
     LocalStorageUtils.trySetLevelPassesType(level7);
 
