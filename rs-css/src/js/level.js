@@ -27,9 +27,9 @@ function createNode(str, tabs) {
     else {
       p.innerText += " class = \"";
       for (let i = 0; i < classes.length; i += 1) {
-        if ( classes[i] === "selected") {
+        if (classes[i] === "selected") {
           newEl.classList.add("shouldBeSelected");
-          if ( i === classes.length - 1) {
+          if (i === classes.length - 1) {
             let inText = newEl.innerText;
             p.innerText = inText.substring(0, inText.length - 1);
           }
@@ -95,7 +95,7 @@ export class Level {
     }
     this.passedType = type;
   }
-  
+
   getPassedType() {
     return this.passedType;
   }
@@ -110,7 +110,7 @@ export class Level {
       prevNode: null,
     };
     let curNode = null;
-    
+
     let arrayOfClosingTags = [];
     let arrayOfTags = [];
 
@@ -170,7 +170,7 @@ export class Level {
       if (curTagName !== "table") {
         const infoBlock = createEl("div");
         const infoContent = createEl("div");
-  
+
         infoBlock.classList.add("block-info");
         infoContent.classList.add("block-info-content");
         infoContent.innerText = `<${curTagName}`;
@@ -192,11 +192,10 @@ export class Level {
           infoContent.innerText += `>`;
         }
         infoContent.innerText += `</${curTagName}>`;
-      
+
         infoBlock.appendChild(infoContent);
         curTag.appendChild(infoBlock);
       }
-
     }// 
     return result;
   }

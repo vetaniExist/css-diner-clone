@@ -17,7 +17,7 @@ function configurateButton(newInnnerText) {
   return newButton;
 }
 
-class Linking{
+class Linking {
   constructor(key, val) {
     this.key = key;
     this.val = val;
@@ -30,7 +30,6 @@ class Linking{
   getVal() {
     return this.val;
   }
-
 }
 
 export class Layout {
@@ -118,9 +117,9 @@ export class Layout {
 
   configurateFooter() {
     this.footer.setAttribute("class", "flex");
-    
+
     const authorLink = createEl("a");
-    authorLink.setAttribute("href" , "https://github.com/vetaniExist");
+    authorLink.setAttribute("href", "https://github.com/vetaniExist");
     authorLink.setAttribute("class", "link text");
     authorLink.text = "author";
 
@@ -129,7 +128,7 @@ export class Layout {
     yearOfCreation.textContent = "2020";
 
     const logoLink = createEl("a");
-    logoLink.setAttribute("href" , "https://rs.school/js/");
+    logoLink.setAttribute("href", "https://rs.school/js/");
     logoLink.setAttribute("class", "link logoLink");
 
     const logo = createEl("img");
@@ -183,22 +182,19 @@ export class Layout {
     let curButtonTextContent = this.getCurrentLevelButton().textContent;
     if (curButtonTextContent.indexOf("✔") !== -1) {
       curButtonTextContent = curButtonTextContent.substring(0, curButtonTextContent.length - 1);
-    } else if (curButtonTextContent.indexOf("🗸") !== -1 ) {
+    } else if (curButtonTextContent.indexOf("🗸") !== -1) {
       curButtonTextContent = curButtonTextContent.substring(0, curButtonTextContent.length - 2);
     }
-    console.log("parsing");
-    console.log(typeof curButtonTextContent);
     return curButtonTextContent;
   }
 
   activateHelpButton() {
     this.cssEditorHelpButton.addEventListener("click", () => {
-      console.log("help");
       if (this.helpHandler) {
         clearInterval(this.helpHandler);
       }
       this.cssEditorTextInput.value = "";
-      
+
       const charHelpTextArray = this.helpText.split("");
       let iter = 0;
       this.addMarkLevelPassesWithHelp();
@@ -214,7 +210,6 @@ export class Layout {
         iter += 1;
         this.cssEditorTextInput.setSelectionRange(iter, iter);
       }, 300);
-
     });
   }
 
@@ -224,8 +219,7 @@ export class Layout {
       const span = createEl("span");
       span.textContent = "✔";
       span.setAttribute("class", "green");
-      console.log("cur level length");
-      console.log(curLevelBtn.innerText.indexOf("✔") > -1);
+
       curLevelBtn.appendChild(span);
     }
   }
@@ -396,17 +390,10 @@ export class Layout {
           let htmlFullLinking = new Linking(curNodeInHtmlEditor, curNodeInHtmlEditor);
           this.linkBetweenImageContentAndHtmlEditorContent.push(htmlFullLinking);
 
-
-          for (let i = 0 ; i < pTags.length; i += 1) {
+          for (let i = 0; i < pTags.length; i += 1) {
             let htmlFullLinking = new Linking(curNode, pTags[i]);
             this.linkBetweenImageContentAndHtmlEditorContent.push(htmlFullLinking);
           }
-
-
-
-          // this.linkBetweenImageContentAndHtmlEditorContent[curNode] = curNodeInHtmlEditor;
-          // this.linkBetweenImageContentAndHtmlEditorContent.push(curNode);
-          // this.linkBetweenImageContentAndHtmlEditorContent.push(curNodeInHtmlEditor)
 
           curNode.addEventListener("mouseenter", () => {
             this.imageHoverOn(curNode, curNodeInHtmlEditor);
@@ -415,33 +402,24 @@ export class Layout {
             this.imageHoverOut(event, curNodeInHtmlEditor, true, false);
           });
 
-          curNodeInHtmlEditor.addEventListener("mouseenter", () => {this.imageHoverOn(curNode, curNodeInHtmlEditor)});
+          curNodeInHtmlEditor.addEventListener("mouseenter", () => { this.imageHoverOn(curNode, curNodeInHtmlEditor) });
           curNodeInHtmlEditor.addEventListener("mouseout", (event) => {
             this.imageHoverOut(event, curNodeInHtmlEditor, false, true);
           });
         }
       }
       idx += 1;
-
     }
 
     this.imageBoxContent.innerText = "";
     this.imageBoxContent.appendChild(clone);
-
-    // console.log(this.linkBetweenImageContentAndHtmlEditorContent);
-
-/*     for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
-      console.log(this.linkBetweenImageContentAndHtmlEditorContent[i]);
-    }
-    console.log('nen') */
   }
 
   getChildWithPTag(node) {
     let nodes = [];
     let pTagNodes = [];
-    nodes = nodes.concat(this.parseNodeForChildren(node,true));
+    nodes = nodes.concat(this.parseNodeForChildren(node, true));
     for (let i = 0; i < nodes.length; i += 1) {
-      // nodes = nodes.concat(this.parseNodeForChildren(nodes[i],true));
       if (nodes[i].tagName === "P") {
         pTagNodes.push(nodes[i]);
       }
@@ -452,7 +430,6 @@ export class Layout {
   getLinking(key) {
     for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
       if (this.linkBetweenImageContentAndHtmlEditorContent[i].key === key) {
-        console.log("find");
         return this.linkBetweenImageContentAndHtmlEditorContent[i].val;
       }
     }
@@ -462,13 +439,11 @@ export class Layout {
   getLinkingByVal(val) {
     for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
       if (this.linkBetweenImageContentAndHtmlEditorContent[i].val === val) {
-        console.log("find");
         return this.linkBetweenImageContentAndHtmlEditorContent[i].key;
       }
     }
     return null
   }
-  
 
   imageHoverOn(curNode, curNodeInHtmlEditor) {
     if (this.imageBoxContentHover) {
@@ -477,8 +452,6 @@ export class Layout {
       this.imageBoxContentHover = curNode;
       this.imageBoxContentHover.classList.add("active-data");
       this.imageBoxContentHover.classList.add("shadow");
-
-      // curNodeInHtmlEditor.classList.add("white");
     } else {
       if (curNode.classList.contains("active")) {
         this.imageBoxContentHover = curNode;
@@ -490,9 +463,8 @@ export class Layout {
     for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
       curNodeInHtmlEditor.childNodes[i].classList.add("white");
     }
-
   }
-  
+
   imageHoverOut(event, curNodeInHtmlEditor, isDirectCurLinking, isDirectImageBoxContentHover) {
     curNodeInHtmlEditor.classList.remove("white");
     for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
@@ -509,13 +481,13 @@ export class Layout {
     } else {
       curLink = this.getLinkingByVal(event.relatedTarget);
     }
-    
+
     if (isDirectImageBoxContentHover) {
       this.imageBoxContentHover = (curLink);
     } else {
       this.imageBoxContentHover = this.getLinkingByVal(curLink);
     }
-    
+
     if (curLink !== null) {
       curNodeInHtmlEditor = this.getLinking(curLink);
       curNodeInHtmlEditor.classList.add("white");
@@ -533,9 +505,7 @@ export class Layout {
     nodes = this.parseNodeForChildren(node);
     for (let i = 0; i < nodes.length; i += 1) {
       let curNode = nodes[i];
-      // const classes = [...curNode.classList];
       nodes = nodes.concat(this.parseNodeForChildren(curNode, true));
-      //  }
     }
     return nodes;
   }
@@ -652,7 +622,6 @@ export class Layout {
   }
 
   deactivateFunc() {
-    console.log("it is work");
     this.body.removeChild(this.popupDiv);
     this.body.removeEventListener("click", this.deactivatePopup, false);
   }
