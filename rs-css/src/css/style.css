@@ -22,7 +22,6 @@
     background-color: red;
     height: 90vh;
     width: 80vw;
-    /*text-align: center;*/
     justify-content: center;
 }
 
@@ -70,7 +69,6 @@
 .editor-line_numeric {
     width: 4vw;
     background-color: rgb( 190, 190, 190);
-    /* palegoldenrod;*/
     text-align: center;
 }
 
@@ -86,7 +84,6 @@
 
 .editor-text {
     width: 21vw;
-    /*gainsboro;*/
 }
 
 .editor-text-html {
@@ -170,8 +167,7 @@
 
 table.active {
     max-width: 300px;
-    /*max-height: 300px;
-    height: 20vh;*/
+
     height: inherit;
     width: inherit;
     border: 1px solid orange;
@@ -181,16 +177,20 @@ table.active {
 plate, lemon, apple {
     position: relative;
 }
+
 table {
     color: orange;
 }
+
 apple {
     color: green;
 }
+
 plate {
     color: red;
 }
-lemon{
+
+lemon {
     color: yellowgreen;
 }
 
@@ -239,65 +239,11 @@ apple.small.active {
 }
 
 @keyframes shouldBeSelected {
-    5% {
+    5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
         transform: translateX(1px);
     }
-    10% {
+    10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% {
         transform: translateX( -1px);
-    }
-    15% {
-        transform: translateX(1px);
-    }
-    20% {
-        transform: translateX(-1px);
-    }
-    25% {
-        transform: translateX(1px);
-    }
-    30% {
-        transform: translateX(-1px);
-    }
-    35% {
-        transform: translateX(1px);
-    }
-    40% {
-        transform: translateX(-1px);
-    }
-    45% {
-        transform: translateX(1px);
-    }
-    50% {
-        transform: translateX(-1px);
-    }
-    55% {
-        transform: translateX(1px);
-    }
-    60% {
-        transform: translateX(-1px);
-    }
-    65% {
-        transform: translateX(1px);
-    }
-    70% {
-        transform: translateX(-1px);
-    }
-    75% {
-        transform: translateX(1px);
-    }
-    80% {
-        transform: translateX(-1px);
-    }
-    85% {
-        transform: translateX(1px);
-    }
-    90% {
-        transform: translateX(-1px);
-    }
-    95% {
-        transform: translateX(1px);
-    }
-    100% {
-        transform: translateX(-1px);
     }
 }
 
@@ -308,65 +254,11 @@ apple.small.active {
 }
 
 @keyframes errorAnimation {
-    5% {
+    5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
         transform: translateX(5px);
     }
-    10% {
+    10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% {
         transform: translateX( -5px);
-    }
-    15% {
-        transform: translateX(5px);
-    }
-    20% {
-        transform: translateX(-5px);
-    }
-    25% {
-        transform: translateX(5px);
-    }
-    30% {
-        transform: translateX(-5px);
-    }
-    35% {
-        transform: translateX(5px);
-    }
-    40% {
-        transform: translateX(-5px);
-    }
-    45% {
-        transform: translateX(5px);
-    }
-    50% {
-        transform: translateX(-5px);
-    }
-    55% {
-        transform: translateX(5px);
-    }
-    60% {
-        transform: translateX(-5px);
-    }
-    65% {
-        transform: translateX(5px);
-    }
-    70% {
-        transform: translateX(-5px);
-    }
-    75% {
-        transform: translateX(5px);
-    }
-    80% {
-        transform: translateX(-5px);
-    }
-    85% {
-        transform: translateX(5px);
-    }
-    90% {
-        transform: translateX(-5px);
-    }
-    95% {
-        transform: translateX(5px);
-    }
-    100% {
-        transform: translateX(-5px);
     }
 }
 
@@ -410,26 +302,22 @@ apple.small.active {
 .block-info {
     display: none;
     position: relative;
-    /*visibility: hidden;*/
 }
 
-.block-info-content{
+.block-info-content {
     width: 180px;
     height: 45px;
     position: absolute;
-    
     transform: translateX(60%);
-    
     background-color: wheat;
     box-sizing: border-box;
     border-radius: 4px;
-
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.active-data > .block-info {
+.active-data>.block-info {
     display: block;
 }
 

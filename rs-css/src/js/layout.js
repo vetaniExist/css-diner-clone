@@ -457,10 +457,17 @@ export class Layout {
       }
     }
     curNodeInHtmlEditor.classList.add("white");
+    for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
+      curNodeInHtmlEditor.childNodes[i].classList.add("white");
+    }
+
   }
   
   imageHoverOut(event, curNodeInHtmlEditor, isDirectCurLinking, isDirectImageBoxContentHover) {
     curNodeInHtmlEditor.classList.remove("white");
+    for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
+      curNodeInHtmlEditor.childNodes[i].classList.remove("white");
+    }
     if (this.imageBoxContentHover) {
       this.imageBoxContentHover.classList.remove("active-data");
       this.imageBoxContentHover.classList.remove("shadow");
@@ -482,6 +489,9 @@ export class Layout {
     if (curLink !== null) {
       curNodeInHtmlEditor = this.getLinking(curLink);
       curNodeInHtmlEditor.classList.add("white");
+      for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
+        curNodeInHtmlEditor.childNodes[i].classList.add("white");
+      }
 
       this.imageBoxContentHover.classList.add("active-data");
       this.imageBoxContentHover.classList.add("shadow");
