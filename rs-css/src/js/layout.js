@@ -1,3 +1,5 @@
+import LocalStorageUtils from "./localStorageUtils";
+
 export function createEl(elName) {
   try {
     return document.createElement(elName);
@@ -79,6 +81,7 @@ export class Layout {
     this.deactivatePopup = null;
 
     this.helpText = null;
+    this.helpHandler = null
   }
 
   configurateLayout() {
@@ -146,17 +149,35 @@ export class Layout {
     this.activateHelpButton();
   }
 
+  parseLevelNameFromButton() {
+    let curButtonTextContent = this.getCurrentLevelButton().textContent;
+    if (curButtonTextContent.indexOf("✔") !== -1) {
+      curButtonTextContent = curButtonTextContent.substring(0, curButtonTextContent.length - 1);
+    } else if (curButtonTextContent.indexOf("🗸") !== -1 ) {
+      curButtonTextContent = curButtonTextContent.substring(0, curButtonTextContent.length - 2);
+    }
+    console.log("parsing");
+    console.log(typeof curButtonTextContent);
+    return curButtonTextContent;
+  }
+
   activateHelpButton() {
     this.cssEditorHelpButton.addEventListener("click", () => {
       console.log("help");
+      if (this.helpHandler) {
+        clearInterval(this.helpHandler);
+      }
       this.cssEditorTextInput.value = "";
+      
       const charHelpTextArray = this.helpText.split("");
       let iter = 0;
       this.addMarkLevelPassesWithHelp();
+
+      LocalStorageUtils.setLevelInLocalStorage(this.parseLevelNameFromButton(this.currentLevelButton), "h");
       this.cssEditorTextInput.focus();
-      let timer = setInterval(() => {
+      this.helpHandler = setInterval(() => {
         if (iter >= charHelpTextArray.length) {
-          clearInterval(timer);
+          clearInterval(this.helpHandler);
           return;
         }
         this.cssEditorTextInput.value += charHelpTextArray[iter];
@@ -165,6 +186,28 @@ export class Layout {
       }, 300);
 
     });
+  }
+
+  addMarkLevelPasses(curLevelBtn) {
+    curLevelBtn = curLevelBtn ? curLevelBtn : this.currentLevelButton;
+    if (curLevelBtn.innerText.indexOf("✔") === -1 && curLevelBtn.innerText.indexOf("🗸") === -1) {
+      const span = createEl("span");
+      span.textContent = "✔";
+      span.setAttribute("class", "green");
+      console.log("cur level length");
+      console.log(curLevelBtn.innerText.indexOf("✔") > -1);
+      curLevelBtn.appendChild(span);
+    }
+  }
+
+  addMarkLevelPassesWithHelp(curLevelBtn) {
+    curLevelBtn = curLevelBtn ? curLevelBtn : this.currentLevelButton;
+    if (curLevelBtn.innerText.indexOf("✔") === -1 && curLevelBtn.innerText.indexOf("🗸") === -1) {
+      const span = createEl("span");
+      span.textContent = "🗸";
+      span.setAttribute("class", "blue");
+      curLevelBtn.appendChild(span);
+    }
   }
 
   addTextInCssEditor() {
@@ -237,6 +280,13 @@ export class Layout {
       levelButton.classList.add("button_level");
       this.rightMenuLevels.appendChild(levelButton);
 
+      const levelInLocalStorage = LocalStorageUtils.findLevelInLocalStorage(levels[i].getLevelName());
+      if (levelInLocalStorage === "p") {
+        this.addMarkLevelPasses(levelButton);
+      } else if (levelInLocalStorage === "h") {
+        this.addMarkLevelPassesWithHelp(levelButton);
+      }
+
       levelButton.addEventListener("click", () => {
         this.setHtmlEditorText(levels[i].getLevelHtml());
         this.configurateImageBoxContent(levels[i].getLevelHtml());
@@ -258,29 +308,6 @@ export class Layout {
         levelButton.click();
       }
     }
-  }
-
-  addMarkLevelPasses() {
-
-    if (!(this.currentLevelButton.innerText.indexOf("✔") > -1)) {
-      const span = createEl("span");
-      span.textContent = "✔";
-      span.setAttribute("class", "green");
-      console.log("cur level length");
-      console.log(this.currentLevelButton.innerText.indexOf("✔") > -1);
-      this.currentLevelButton.appendChild(span);
-    }
-
-  }
-
-  addMarkLevelPassesWithHelp() {
-    if (!this.currentLevelButton.innerText.indexOf("✔") > -1 && !this.currentLevelButton.innerText.indexOf("🗸") > -1) {
-      const span = createEl("span");
-      span.textContent = "🗸";
-      span.setAttribute("class", "blue");
-      this.currentLevelButton.appendChild(span);
-    }
-
   }
 
   initImageBox() {
@@ -373,10 +400,10 @@ export class Layout {
 
     // console.log(this.linkBetweenImageContentAndHtmlEditorContent);
 
-    for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
+/*     for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
       console.log(this.linkBetweenImageContentAndHtmlEditorContent[i]);
     }
-    console.log('nen')
+    console.log('nen') */
   }
 
   getChildWithPTag(node) {

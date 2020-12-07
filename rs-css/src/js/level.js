@@ -59,6 +59,7 @@ export class Level {
     this.levelHtml = null;
     this.levelName = levelName;
     this.help = null;
+    this.passedType = null;
   }
 
   setLevelName(newLevelName) {
@@ -83,6 +84,20 @@ export class Level {
 
   getHelp() {
     return this.help;
+  }
+
+  setPassedType(type) {
+    // p = passed by own
+    // h = passed with help
+    // n = not passed
+    if (type !== "p" || type !== "h") {
+      this.passedType = "n";
+    }
+    this.passedType = type;
+  }
+  
+  getPassedType() {
+    return this.passedType;
   }
 
   parseTemplateString(str) {

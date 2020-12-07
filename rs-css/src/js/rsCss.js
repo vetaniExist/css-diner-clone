@@ -4,10 +4,13 @@ import {
 } from "./layout";
 import Level from "./level";
 
+import LocalStorageUtils from "./localStorageUtils"
+
 export class RsCss {
   constructor() {
     this.layout = new Layout();
     this.levels = [];
+    this.levelsInLocalStorage = null;
   }
 
   start() {
@@ -35,11 +38,14 @@ export class RsCss {
     this.layout.setEditorTextInputValue("");
     let checkResult = this.checkWinCondition(inputText);
     if (checkResult[0]) {
+      let levelName = this.layout.parseLevelNameFromButton();
       if (!this.layout.tryGetNextLevelButton()) {
         // it is win
+        this.layout.addMarkLevelPasses();
         checkResult[2].forEach((el) => this.layout.addLevelPassAnimation(el));
         setTimeout(() => this.layout.activatePopup(), 315)
         console.log("you complete last level");
+        LocalStorageUtils.setLevelInLocalStorage(levelName, "p");
         // add level passes counter
 
       } else {
@@ -47,6 +53,7 @@ export class RsCss {
         this.layout.addMarkLevelPasses();
         checkResult[2].forEach((el) => this.layout.addLevelPassAnimation(el));
         setTimeout(() => this.layout.trySetNextCurrentLevelButton(), 315)
+        LocalStorageUtils.setLevelInLocalStorage(levelName, "p");
       }
     } else {
       this.layout.setEditorBoxErrorAnimation();
@@ -100,25 +107,31 @@ export class RsCss {
   }
 
   constructLevels() {
+    LocalStorageUtils.initLevelsFromLocalStorage();
+
     const level1 = new Level("1");
-    level1.configurateLevelFromString(level1, "div>apple.small>div,div>test,newtest;div;;div#test>t2,div;te,te;div>hoba>hoba2>test;div,div;div;div");
-    level1.setHelp("not empl");
+    level1.configurateLevelFromString(level1, "plate.selected");
+    level1.setHelp("plate");
     this.levels.push(level1);
+    LocalStorageUtils.trySetLevelPassesType(level1);
 
     const level2 = new Level("2");
     level2.configurateLevelFromString(level2, "plate.selected,plate.selected");
     level2.setHelp("plate");
     this.levels.push(level2);
+    LocalStorageUtils.trySetLevelPassesType(level2);
 
     const level3  = new Level("3");
     level3.configurateLevelFromString(level3, "plate>apple.small.test33.selected.test1.test2,apple");
     level3.setHelp("apple.small");
     this.levels.push(level3);
+    LocalStorageUtils.trySetLevelPassesType(level3);
 
     const level4  = new Level("4");
     level4.configurateLevelFromString(level4, "plate,plate>lemon.selected,lemon.selected");
     level4.setHelp("lemon");
     this.levels.push(level4);
+    LocalStorageUtils.trySetLevelPassesType(level4);
   }
 }
 
