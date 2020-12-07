@@ -108,7 +108,7 @@ export class Layout {
     this.rightMenuTitle = createEl("div");
     this.rightMenuContent = createEl("div");
     this.rightMenuFunctionalButtons = createEl("div");
-    this.rightMenuFunctuonalButtonRestore = configurateButton("Restore Progress");
+    this.rightMenuFunctuonalButtonRestore = configurateButton("Restore");
     this.rightMenuLevels = createEl("div");
     //
     this.currentLevelButton = null;
