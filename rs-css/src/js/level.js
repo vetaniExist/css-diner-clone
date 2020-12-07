@@ -53,6 +53,48 @@ function createCloseTag(str, tabs) {
   return "\t".repeat(tabs).concat(`</${tag}>`);
 }
 
+function addInfoBlock(arrayOfTags, arrayOfClosingTags) {
+  while (arrayOfTags.length) {
+    const arrayOfTechnicalClasses = ["block", "shouldBeSelected"];
+    const p = createEl("p");
+    p.innerText = arrayOfClosingTags.pop();
+    p.setAttribute("class", "block");
+    const curTag = arrayOfTags.pop();
+    curTag.appendChild(p);
+
+    const curTagName = curTag.tagName.toLowerCase();
+    if (curTagName !== "table") {
+      const infoBlock = createEl("div");
+      const infoContent = createEl("div");
+
+      infoBlock.classList.add("block-info");
+      infoContent.classList.add("block-info-content");
+      infoContent.innerText = `<${curTagName}`;
+      if (curTag.classList.length > 1) {
+        const arrayOfClasses = [];
+        for (let i = 0; i < curTag.classList.length; i += 1) {
+          if (!arrayOfTechnicalClasses.includes(curTag.classList[i])) {
+            arrayOfClasses.push(curTag.classList[i]);
+          }
+        }
+        if (arrayOfClasses.length) {
+          infoContent.innerText += " class =";
+          for (let i = 0; i < arrayOfClasses.length; i += 1) {
+            infoContent.innerText += arrayOfClasses[i];
+          }
+          infoContent.innerText += "\">";
+        }
+      } else {
+        infoContent.innerText += ">";
+      }
+      infoContent.innerText += `</${curTagName}>`;
+
+      infoBlock.appendChild(infoContent);
+      curTag.appendChild(infoBlock);
+    }
+  }//
+}
+
 function parseTemplateString(str) {
   const splitedByBasicDelemeter = str.split(";");
   let tabsCounter = 0;
@@ -111,45 +153,7 @@ function parseTemplateString(str) {
     }
   }
   //
-  while (arrayOfTags.length) {
-    const arrayOfTechnicalClasses = ["block", "shouldBeSelected"];
-    const p = createEl("p");
-    p.innerText = arrayOfClosingTags.pop();
-    p.setAttribute("class", "block");
-    const curTag = arrayOfTags.pop();
-    curTag.appendChild(p);
-
-    const curTagName = curTag.tagName.toLowerCase();
-    if (curTagName !== "table") {
-      const infoBlock = createEl("div");
-      const infoContent = createEl("div");
-
-      infoBlock.classList.add("block-info");
-      infoContent.classList.add("block-info-content");
-      infoContent.innerText = `<${curTagName}`;
-      if (curTag.classList.length > 1) {
-        const arrayOfClasses = [];
-        for (let i = 0; i < curTag.classList.length; i += 1) {
-          if (!arrayOfTechnicalClasses.includes(curTag.classList[i])) {
-            arrayOfClasses.push(curTag.classList[i]);
-          }
-        }
-        if (arrayOfClasses.length) {
-          infoContent.innerText += " class =";
-          for (let i = 0; i < arrayOfClasses.length; i += 1) {
-            infoContent.innerText += arrayOfClasses[i];
-          }
-          infoContent.innerText += "\">";
-        }
-      } else {
-        infoContent.innerText += ">";
-      }
-      infoContent.innerText += `</${curTagName}>`;
-
-      infoBlock.appendChild(infoContent);
-      curTag.appendChild(infoBlock);
-    }
-  }//
+  addInfoBlock(arrayOfTags, arrayOfClosingTags);
   return result;
 }
 
