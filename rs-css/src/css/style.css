@@ -354,6 +354,10 @@ footer {
     color: wheat;
 }
 
+.basic_button:hover {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 900px) {
     .editor-enter {
         justify-content: flex-end;
@@ -361,7 +365,7 @@ footer {
     }
     .editor-title {
         margin: 0 3px;
-        font-size: 14px;
+        font-size: 13px;
     }
     .right_menu-title {
         font-size: 23px;
