@@ -1,4 +1,5 @@
 import LocalStorageUtils from "./localStorageUtils";
+import logoRSS from "../assets/images/rs_school_js.svg";
 
 export function createEl(elName) {
   try {
@@ -39,6 +40,7 @@ export class Layout {
     this.mainFlexBox = createEl("div");
     this.gameFlexBox = createEl("div");
     this.rightMenuFlexBox = createEl("div");
+    this.footer = createEl("footer");
 
     this.imageBox = createEl("div");
     this.editorsBox = createEl("div");
@@ -110,7 +112,35 @@ export class Layout {
     this.mainFlexBox.appendChild(this.rightMenuFlexBox);
 
     this.body.appendChild(this.mainFlexBox);
+    this.configurateFooter();
     this.configuratePopup();
+  }
+
+  configurateFooter() {
+    this.footer.setAttribute("class", "flex");
+    
+    const authorLink = createEl("a");
+    authorLink.setAttribute("href" , "https://github.com/vetaniExist");
+    authorLink.setAttribute("class", "link text");
+    authorLink.text = "author";
+
+    const yearOfCreation = createEl("span");
+    yearOfCreation.setAttribute("class", "text");
+    yearOfCreation.textContent = "2020";
+
+    const logoLink = createEl("a");
+    logoLink.setAttribute("href" , "https://rs.school/js/");
+    logoLink.setAttribute("class", "link logoLink");
+
+    const logo = createEl("img");
+    logo.src = logoRSS;
+
+    logoLink.appendChild(logo);
+
+    this.footer.appendChild(authorLink);
+    this.footer.appendChild(yearOfCreation);
+    this.footer.appendChild(logoLink);
+    this.body.appendChild(this.footer);
   }
 
   configurateCssEditor() {

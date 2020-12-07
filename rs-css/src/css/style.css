@@ -10,8 +10,8 @@
 
 .main-box {
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-end;
+    height: 95vh;
 }
 
 .flex-wrap {
@@ -19,20 +19,19 @@
 }
 
 .gameBox {
-    background-color: red;
     height: 90vh;
     width: 80vw;
     justify-content: center;
 }
 
 .rightMenuBox {
-    background-color: #171009;
+    background-color: rgba(36, 39, 60, 0.7);
+    /*background-color: #171009;*/
     height: 90vh;
     width: 20vw;
 }
 
 .imageBox {
-    background-color: purple;
     height: 25vh;
     width: 60vw;
 }
@@ -335,4 +334,27 @@ apple.small.active {
 
 lemon.active.shadow, apple.active.shadow, plate.active.shadow {
     box-shadow: inset 0 0 5px 5px wheat;
+}
+
+
+footer {
+    height: 5vh;
+
+
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+.link{
+    text-decoration: none;
+}
+
+.logoLink {
+    height: inherit;
+    width: 100px;
+}
+
+.text {
+    color: wheat;
 }
