@@ -159,6 +159,7 @@ export class Level {
     }
     // 
     while (arrayOfTags.length) {
+      const arrayOfTechnicalClasses = ["block", "shouldBeSelected"];
       const p = createEl("p");
       p.innerText = arrayOfClosingTags.pop();
       p.setAttribute("class", "block");
@@ -172,7 +173,25 @@ export class Level {
   
         infoBlock.classList.add("block-info");
         infoContent.classList.add("block-info-content");
-        infoContent.innerText = `<${curTagName}></${curTagName}>`;
+        infoContent.innerText = `<${curTagName}`;
+        if (curTag.classList.length > 1) {
+          let arrayOfClasses = [];
+          for (let i = 0; i < curTag.classList.length; i += 1) {
+            if (!arrayOfTechnicalClasses.includes(curTag.classList[i])) {
+              arrayOfClasses.push(curTag.classList[i]);
+            }
+          }
+          if (arrayOfClasses.length) {
+            infoContent.innerText += ` class =`;
+            for (let i = 0; i < arrayOfClasses.length; i += 1) {
+              infoContent.innerText += arrayOfClasses[i];
+            }
+            infoContent.innerText += `">`;
+          }
+        } else {
+          infoContent.innerText += `>`;
+        }
+        infoContent.innerText += `</${curTagName}>`;
       
         infoBlock.appendChild(infoContent);
         curTag.appendChild(infoBlock);

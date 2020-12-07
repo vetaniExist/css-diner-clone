@@ -415,7 +415,7 @@ apple.small.active {
 
 .block-info-content{
     width: 180px;
-    height: 25px;
+    height: 45px;
     position: absolute;
     
     transform: translateX(60%);
@@ -423,6 +423,10 @@ apple.small.active {
     background-color: wheat;
     box-sizing: border-box;
     border-radius: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .active-data > .block-info {
