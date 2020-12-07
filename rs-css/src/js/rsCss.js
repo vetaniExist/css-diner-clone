@@ -31,6 +31,15 @@ export class RsCss {
         this.updateCssEditorInput();
       }
     });
+
+    this.layout.getRestoreButton().addEventListener("click", () => {
+      const levelsDiv = this.layout.getLevelsDivContent().childNodes;
+      for (let i = 0; i < levelsDiv.length; i += 1) {
+        levelsDiv[i].innerText = this.levels[i].getLevelName();
+      } 
+      LocalStorageUtils.restoreLevelsInLocalStorage();
+      levelsDiv[0].click();
+    });
   }
 
   updateCssEditorInput() {

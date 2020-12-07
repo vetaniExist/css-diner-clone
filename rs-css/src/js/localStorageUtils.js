@@ -34,6 +34,14 @@ export class LocalStorageUtils {
       level.setPassedType(this.findLevelInLocalStorage(level.getLevelName()));
     }
   }
+
+  static restoreLevelsInLocalStorage() {
+    for (let key in this.levelsInLocalStorage) {
+      this.levelsInLocalStorage[key] = "n";
+    }
+    console.log(this.levelsInLocalStoragee);
+    localStorage.setItem("vetaniExist-rs_css-levels", JSON.stringify(this.levelsInLocalStorage));
+  }
 }
 
 export default LocalStorageUtils;

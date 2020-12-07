@@ -559,6 +559,14 @@ export class Layout {
     return this.cssEditorHelpButton;
   }
 
+  getRestoreButton() {
+    return this.rightMenuFunctuonalButtonRestore;
+  }
+
+  getLevelsDivContent() {
+    return this.rightMenuLevels;
+  }
+
   getEditorTextInput() {
     return this.cssEditorTextInput;
   }
