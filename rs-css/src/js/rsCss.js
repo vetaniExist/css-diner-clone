@@ -56,7 +56,6 @@ export class RsCss {
         console.log("you complete last level");
         LocalStorageUtils.setLevelInLocalStorage(levelName, "p");
         // add level passes counter
-
       } else {
         // add win animation
         this.layout.addMarkLevelPasses();
@@ -70,44 +69,41 @@ export class RsCss {
   }
 
   checkWinCondition(inputText) {
-    let clone = this.layout.imageBoxContent.childNodes[0];
-    let nodes =  [...clone.childNodes];
+    const imageBox = this.layout.imageBoxContent.childNodes[0];
+    let basicNodes = [...imageBox.childNodes];
+
+    let clone = this.layout.imageBoxContent.childNodes[0].cloneNode(true);
+    let nodes = [...clone.childNodes];
 
     let arrayOfElementsToFind = [];
     let arrayOfFindElements = [];
 
+    for (let i = 0; i < basicNodes.length; i += 1) {
+      basicNodes = basicNodes.concat(this.layout.parseNodeForChildren(basicNodes[i], true));
+    }
+
+    let iter = 0;
     for (let i = 0; i < nodes.length; i += 1) {
       nodes = nodes.concat(this.layout.parseNodeForChildren(nodes[i]));
 
-      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].tagName === "TABLE" || nodes[i].className.includes("block-info")) {
-        // nodes[i].innerText = "";
-        console.log("parent");
-        console.log(nodes[i].parentNode);
+      if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].className.includes("block-info")) {
         nodes[i].parentNode.removeChild(nodes[i]);
+        iter += 1;
+
         continue;
       }
-
       const isFind = nodes[i].matches(inputText);
-      console.log("смотрим");
-      console.log(nodes[i]);
 
       if (this.checkItSelected(nodes[i])) {
-        arrayOfElementsToFind.push(nodes[i]);
+        arrayOfElementsToFind.push(basicNodes[iter]);
       }
       if (isFind) {
-        arrayOfFindElements.push(nodes[i]);
+        arrayOfFindElements.push(basicNodes[iter]);
       }
+      iter +=1;
     }
 
-    console.log("get this nodes");
-    console.log(nodes);
-
     const isWin = this.compareArrays(arrayOfElementsToFind, arrayOfFindElements);
-    console.log("arrayOfElementsToFind");
-    console.log(arrayOfElementsToFind);
-    console.log(arrayOfFindElements);
-    console.log("you win? ", isWin);
-    console.log(clone);
     return [isWin, arrayOfElementsToFind, arrayOfFindElements];
   }
 
@@ -167,7 +163,7 @@ export class RsCss {
 
     const level7 = new Level("7");
     level7.configurateLevelFromString(level7, "plate>apple,apple.selected");
-    level7.setHelp("apple:nth-child(3)");// plate :last-child
+    level7.setHelp("plate :last-child");
     this.levels.push(level7);
     LocalStorageUtils.trySetLevelPassesType(level7);
 
