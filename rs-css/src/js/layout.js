@@ -384,6 +384,8 @@ export class Layout {
 
       if (levelNameFromStorage && levelNameFromStorage === levels[i].getLevelName()) {
         levelButton.click();
+      } else if (!levelNameFromStorage && i === 0) {
+        levelButton.click();
       }
     }
   }
