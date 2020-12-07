@@ -89,7 +89,6 @@ export class RsCss {
       if (nodes[i] === Node.TEXT_NODE || nodes[i].tagName === "P" || nodes[i].className.includes("block-info")) {
         nodes[i].parentNode.removeChild(nodes[i]);
         iter += 1;
-
         continue;
       }
       const isFind = nodes[i].matches(inputText);
@@ -100,7 +99,7 @@ export class RsCss {
       if (isFind) {
         arrayOfFindElements.push(basicNodes[iter]);
       }
-      iter +=1;
+      iter += 1;
     }
 
     const isWin = this.compareArrays(arrayOfElementsToFind, arrayOfFindElements);
@@ -123,91 +122,35 @@ export class RsCss {
     LocalStorageUtils.initLevelsFromLocalStorage();
 
     // *
-    const level1 = new Level("1");
-    level1.configurateLevelFromString(level1, "plate.selected,plate.selected");
-    level1.setHelp("*");
-    this.levels.push(level1);
-    LocalStorageUtils.trySetLevelPassesType(level1);
-
+    this.createLevel("1", "plate.selected,plate.selected", "*", "Select all plates");
     // id #x
-    const level2 = new Level("2");
-    level2.configurateLevelFromString(level2, "plate,plate#second.selected");
-    level2.setHelp("#second");
-    this.levels.push(level2);
-    LocalStorageUtils.trySetLevelPassesType(level2);
-
+    this.createLevel("2", "plate,plate#second.selected", "#second", "Select second plate");
     // .class
-    const level3 = new Level("3");
-    level3.configurateLevelFromString(level3, "plate>apple.small.selected,apple");
-    level3.setHelp(".small");
-    this.levels.push(level3);
-    LocalStorageUtils.trySetLevelPassesType(level3);
+    this.createLevel("3", "plate>apple.small.selected,apple", ".small", "Select small apple");
 
-    const level4 = new Level("4");
-    level4.configurateLevelFromString(level4, "plate,plate>lemon.selected,lemon.selected");
-    level4.setHelp("lemon");
-    this.levels.push(level4);
-    LocalStorageUtils.trySetLevelPassesType(level4);
+    this.createLevel("4", "plate,plate>lemon.selected,lemon.selected", "lemon", "Select all lemons");
 
-    const level5 = new Level("5");
-    level5.configurateLevelFromString(level5, "plate,apple.selected,plate,apple.selected,apple");
-    level5.setHelp("plate + apple");
-    this.levels.push(level5);
-    LocalStorageUtils.trySetLevelPassesType(level5);
+    this.createLevel("5", "apple,plate>apple.selected,apple.selected", "plate apple", "Select all apples on plate");
 
-    const level6 = new Level("6");
-    level6.configurateLevelFromString(level6, "apple,plate,apple.selected,plate,apple.selected,apple.selected");
-    level6.setHelp("plate ~ apple");
-    this.levels.push(level6);
-    LocalStorageUtils.trySetLevelPassesType(level6);
+    this.createLevel("6", "lemon.selected,plate>apple.selected,apple.selected", "lemon, apple", "select all fruits");
 
-    const level7 = new Level("7");
-    level7.configurateLevelFromString(level7, "plate>apple,apple.selected");
-    level7.setHelp("plate :last-child");
-    this.levels.push(level7);
-    LocalStorageUtils.trySetLevelPassesType(level7);
+    this.createLevel("7", "apple,plate>apple.selected,lemon.selected;plate>lemon.selected;plate>apple.selected,apple.selected", "plate *", "select all fruits on all plates");
 
-    const level8 = new Level("8");
-    level8.configurateLevelFromString(level8, "apple,apple.selected");
-    level8.setHelp("apple:nth-child(3)");
-    this.levels.push(level8);
-    LocalStorageUtils.trySetLevelPassesType(level8);
+    this.createLevel("8", "plate,apple.selected,plate,apple.selected,apple", "plate + apple", "Select apple that's next to plates");
 
-    /* const level9 = new Level("9");
-    this.levels.push(level9);
+    this.createLevel("9", "apple,plate,apple.selected,plate,apple.selected,apple.selected", "plate ~ apple", "Select apple beside the plates");
 
-    const level10 = new Level("10");
-    this.levels.push(level10);
+    this.createLevel("10", "plate>apple.selected.small,apple.small,apple.small", "apple:first-child", "select first apple on plate");
 
-    const level11 = new Level("11");
-    this.levels.push(level11);
-
-    const level12 = new Level("12");
-    this.levels.push(level12);
-
-    const level13 = new Level("13");
-    this.levels.push(level13);
-
-    const level14 = new Level("14");
-    this.levels.push(level14);
-
-    const level15 = new Level("15");
-    this.levels.push(level15);
-
-    const level16 = new Level("16");
-    this.levels.push(level16);
-
-    const level17 = new Level("17");
-    this.levels.push(level17);
-
-    const level18 = new Level("18");
-    this.levels.push(level18);
-
-    const level19 = new Level("19");
-    this.levels.push(level19);
-
-    const level20 = new Level("20");
-    this.levels.push(level20); */
+    this.createLevel("11", "apple.small,apple.small,plate>apple.selected.small,apple.small,apple.small", "plate apple:first-child", "select first apple on plate");
+  }
+  createLevel(levelName, levelString, help, title) {
+    const level = new Level(levelName);
+    level.configurateLevelFromString(levelString);
+    level.setHelp(help);
+    level.setTitle(title);
+    this.levels.push(level);
+    LocalStorageUtils.trySetLevelPassesType(level);
   }
 }
 

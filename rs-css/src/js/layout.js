@@ -314,6 +314,7 @@ export class Layout {
       levelButton.addEventListener("click", () => {
         this.setHtmlEditorText(levels[i].getLevelHtml());
         this.configurateImageBoxContent(levels[i].getLevelHtml());
+        this.setImageBoxTitle(levels[i].getTitle());
         if (this.currentLevelButton !== null) {
           this.currentLevelButton.classList.remove("button_level-active");
           this.currentLevelButton = levelButton;
@@ -336,7 +337,6 @@ export class Layout {
 
   initImageBox() {
     this.imageBoxTitle.setAttribute("class", "flex right_menu-title");
-    this.setImageBoxTitle("test");
 
     this.imageBoxContent = createEl("div");
     this.imageBoxContent.setAttribute("class", "flex image_box-content");

@@ -60,6 +60,7 @@ export class Level {
     this.levelName = levelName;
     this.help = null;
     this.passedType = null;
+    this.title = null;
   }
 
   setLevelName(newLevelName) {
@@ -98,6 +99,14 @@ export class Level {
 
   getPassedType() {
     return this.passedType;
+  }
+
+  setTitle(newTitle) {
+    this.title = newTitle;
+  }
+
+  getTitle() {
+    return this.title;
   }
 
   parseTemplateString(str) {
@@ -200,8 +209,8 @@ export class Level {
     return result;
   }
 
-  configurateLevelFromString(level, str) {
-    level.setLevelHtml(this.parseTemplateString(str));
+  configurateLevelFromString(str) {
+    this.setLevelHtml(this.parseTemplateString(str));
   }
 }
 
