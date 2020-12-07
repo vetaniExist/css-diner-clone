@@ -6,13 +6,13 @@ export class LocalStorageUtils {
       localStorage.setItem("vetaniExist-rs_css-levels", this.levelsInLocalStorage);
     }
   }
-  
+
   static findLevelInLocalStorage(levelName) {
     return this.levelsInLocalStorage[levelName];
   }
 
   static setLevelInLocalStorage(levelName, val) {
-    let currentType = this.levelsInLocalStorage[levelName]; 
+    const currentType = this.levelsInLocalStorage[levelName];
     if (currentType === "n" || !currentType) {
       this.levelsInLocalStorage[levelName] = val;
       localStorage.setItem("vetaniExist-rs_css-levels", JSON.stringify(this.levelsInLocalStorage));
@@ -29,9 +29,10 @@ export class LocalStorageUtils {
   }
 
   static restoreLevelsInLocalStorage() {
-    for (let key in this.levelsInLocalStorage) {
+    const keys = Object.keys(this.levelsInLocalStorage);
+    keys.forEach((key) => {
       this.levelsInLocalStorage[key] = "n";
-    }
+    });
     localStorage.setItem("vetaniExist-rs_css-levels", JSON.stringify(this.levelsInLocalStorage));
   }
 }

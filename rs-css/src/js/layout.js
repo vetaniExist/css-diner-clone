@@ -1,5 +1,6 @@
-import LocalStorageUtils from "./localStorageUtils";
+import LSU from "./localStorageUtils";
 import logoRSS from "../assets/images/rs_school_js.svg";
+import Linking from "./Linking";
 
 export function createEl(elName) {
   try {
@@ -17,18 +18,58 @@ function configurateButton(newInnnerText) {
   return newButton;
 }
 
-class Linking {
-  constructor(key, val) {
-    this.key = key;
-    this.val = val;
-  }
+export function parseNodeForChildren(node, shouldSafe) {
+  const clone = node;
+  const nodes = [];
 
-  getKey() {
-    return this.key;
+  for (let i = 0; i < clone.childNodes.length; i += 1) {
+    const curNode = clone.childNodes[i];
+    if (curNode.nodeType !== Node.TEXT_NODE) {
+      nodes.push(curNode);
+    } else if (!shouldSafe) {
+      const classes = [...curNode.parentNode.classList];
+      if (!classes.includes("block-info-content")) {
+        curNode.textContent = "";
+      }
+    }
   }
+  return nodes;
+}
 
-  getVal() {
-    return this.val;
+function getChildWithPTag(node) {
+  let nodes = [];
+  const pTagNodes = [];
+  nodes = nodes.concat(parseNodeForChildren(node, true));
+  for (let i = 0; i < nodes.length; i += 1) {
+    if (nodes[i].tagName === "P") {
+      pTagNodes.push(nodes[i]);
+    }
+  }
+  return pTagNodes;
+}
+
+function getAllNodes(node) {
+  let nodes = [];
+  nodes = parseNodeForChildren(node);
+  for (let i = 0; i < nodes.length; i += 1) {
+    const curNode = nodes[i];
+    nodes = nodes.concat(parseNodeForChildren(curNode, true));
+  }
+  return nodes;
+}
+
+export function addLevelPassAnimation(el) {
+  el.classList.add("win");
+  el.classList.remove("shouldBeSelected");
+}
+
+function fillLineNumeric(line) {
+  line.innerText = "";// eslint-disable-line no-param-reassign
+  for (let i = 1; i <= 20; i += 1) {
+    const span = createEl("span");
+    span.innerText = i;
+    span.setAttribute("class", "numeric");
+    line.appendChild(span);
   }
 }
 
@@ -67,7 +108,7 @@ export class Layout {
     this.rightMenuTitle = createEl("div");
     this.rightMenuContent = createEl("div");
     this.rightMenuFunctionalButtons = createEl("div");
-    this.rightMenuFunctuonalButtonRestore = configurateButton("Restore Progress")
+    this.rightMenuFunctuonalButtonRestore = configurateButton("Restore Progress");
     this.rightMenuLevels = createEl("div");
     //
     this.currentLevelButton = null;
@@ -82,7 +123,7 @@ export class Layout {
     this.deactivatePopup = null;
 
     this.helpText = null;
-    this.helpHandler = null
+    this.helpHandler = null;
   }
 
   configurateLayout() {
@@ -171,7 +212,7 @@ export class Layout {
     this.cssEditorCaptions.appendChild(cssText);
     this.cssEditorCaptions.appendChild(styleText);
 
-    this.fillLineNumeric(this.cssEditorLineNumeric);
+    fillLineNumeric(this.cssEditorLineNumeric);
     this.cssEditorEnter.appendChild(this.cssEditorEnterButton);
     this.cssEditorEnter.appendChild(this.cssEditorHelpButton);
     this.addTextInCssEditor();
@@ -199,7 +240,7 @@ export class Layout {
       let iter = 0;
       this.addMarkLevelPassesWithHelp();
 
-      LocalStorageUtils.setLevelInLocalStorage(this.parseLevelNameFromButton(this.currentLevelButton), "h");
+      LSU.setLevelInLocalStorage(this.parseLevelNameFromButton(this.currentLevelButton), "h");
       this.cssEditorTextInput.focus();
       this.helpHandler = setInterval(() => {
         if (iter >= charHelpTextArray.length) {
@@ -213,8 +254,14 @@ export class Layout {
     });
   }
 
-  addMarkLevelPasses(curLevelBtn) {
-    curLevelBtn = curLevelBtn ? curLevelBtn : this.currentLevelButton;
+  addMarkLevelPasses(curLevelButton) {
+    let curLevelBtn;
+    if (curLevelButton) {
+      curLevelBtn = curLevelButton;
+    } else {
+      curLevelBtn = this.currentLevelButton;
+    }
+
     if (curLevelBtn.innerText.indexOf("✔") === -1 && curLevelBtn.innerText.indexOf("🗸") === -1) {
       const span = createEl("span");
       span.textContent = "✔";
@@ -224,8 +271,14 @@ export class Layout {
     }
   }
 
-  addMarkLevelPassesWithHelp(curLevelBtn) {
-    curLevelBtn = curLevelBtn ? curLevelBtn : this.currentLevelButton;
+  addMarkLevelPassesWithHelp(curLevelButton) {
+    let curLevelBtn;
+    if (curLevelButton) {
+      curLevelBtn = curLevelButton;
+    } else {
+      curLevelBtn = this.currentLevelButton;
+    }
+
     if (curLevelBtn.innerText.indexOf("✔") === -1 && curLevelBtn.innerText.indexOf("🗸") === -1) {
       const span = createEl("span");
       span.textContent = "🗸";
@@ -274,7 +327,7 @@ export class Layout {
     this.htmlEditorCaptions.appendChild(htmlText);
     this.htmlEditorCaptions.appendChild(styleText);
 
-    this.fillLineNumeric(this.htmlEditorLineNumeric);
+    fillLineNumeric(this.htmlEditorLineNumeric);
   }
 
   configurateRightMenu() {
@@ -304,7 +357,7 @@ export class Layout {
       levelButton.classList.add("button_level");
       this.rightMenuLevels.appendChild(levelButton);
 
-      const levelInLocalStorage = LocalStorageUtils.findLevelInLocalStorage(levels[i].getLevelName());
+      const levelInLocalStorage = LSU.findLevelInLocalStorage(levels[i].getLevelName());
       if (levelInLocalStorage === "p") {
         this.addMarkLevelPasses(levelButton);
       } else if (levelInLocalStorage === "h") {
@@ -345,53 +398,35 @@ export class Layout {
     this.imageBox.appendChild(this.imageBoxContent);
   }
 
-  parseNodeForChildren(node, shouldSafe) {
-    let clone = node;
-    let nodes = [];
-
-    for (let i = 0; i < clone.childNodes.length; i += 1) {
-      const curNode = clone.childNodes[i];
-      if (curNode.nodeType !== Node.TEXT_NODE) {
-        nodes.push(curNode);
-      } else if (!shouldSafe) {
-        const classes = [...curNode.parentNode.classList];
-        if (!classes.includes("block-info-content")) {
-          curNode.textContent = "";
-        }
-      }
-    }
-    return nodes;
-  }
-
   configurateImageBoxContent(htmlObject) {
-    let clone = htmlObject.cloneNode(true);
-    let htmlEditor = this.getAllNodes(this.getHtmlEditorInnerCode());
+    const clone = htmlObject.cloneNode(true);
+    const htmlEditor = getAllNodes(this.getHtmlEditorInnerCode());
     let nodes = [];
 
-    let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
-    nodes = nodes.concat(this.parseNodeForChildren(clone));
+    const arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
+    nodes = nodes.concat(parseNodeForChildren(clone));
 
     if (arrOfActivatableElements.includes(clone.tagName)) {
       clone.classList.add("active");
     }
     let idx = 0;
     while (nodes.length) {
-      let curNode = nodes.shift();
-      nodes = nodes.concat(this.parseNodeForChildren(curNode));
+      const curNode = nodes.shift();
+      nodes = nodes.concat(parseNodeForChildren(curNode));
 
       if (![...curNode.classList].includes("block-info")) {
         if (arrOfActivatableElements.includes(curNode.tagName)) {
           curNode.classList.add("active");
           const curNodeInHtmlEditor = htmlEditor[idx];
 
-          let linking = new Linking(curNode, curNodeInHtmlEditor);
-          const pTags = this.getChildWithPTag(curNodeInHtmlEditor);
+          const linking = new Linking(curNode, curNodeInHtmlEditor);
+          const pTags = getChildWithPTag(curNodeInHtmlEditor);
           this.linkBetweenImageContentAndHtmlEditorContent.push(linking);
           let htmlFullLinking = new Linking(curNodeInHtmlEditor, curNodeInHtmlEditor);
           this.linkBetweenImageContentAndHtmlEditorContent.push(htmlFullLinking);
 
           for (let i = 0; i < pTags.length; i += 1) {
-            let htmlFullLinking = new Linking(curNode, pTags[i]);
+            htmlFullLinking = new Linking(curNode, pTags[i]);
             this.linkBetweenImageContentAndHtmlEditorContent.push(htmlFullLinking);
           }
 
@@ -402,7 +437,9 @@ export class Layout {
             this.imageHoverOut(event, curNodeInHtmlEditor, true, false);
           });
 
-          curNodeInHtmlEditor.addEventListener("mouseenter", () => { this.imageHoverOn(curNode, curNodeInHtmlEditor) });
+          curNodeInHtmlEditor.addEventListener("mouseenter",
+            () => { this.imageHoverOn(curNode, curNodeInHtmlEditor); });
+
           curNodeInHtmlEditor.addEventListener("mouseout", (event) => {
             this.imageHoverOut(event, curNodeInHtmlEditor, false, true);
           });
@@ -415,25 +452,13 @@ export class Layout {
     this.imageBoxContent.appendChild(clone);
   }
 
-  getChildWithPTag(node) {
-    let nodes = [];
-    let pTagNodes = [];
-    nodes = nodes.concat(this.parseNodeForChildren(node, true));
-    for (let i = 0; i < nodes.length; i += 1) {
-      if (nodes[i].tagName === "P") {
-        pTagNodes.push(nodes[i]);
-      }
-    }
-    return pTagNodes;
-  }
-
   getLinking(key) {
     for (let i = 0; i < this.linkBetweenImageContentAndHtmlEditorContent.length; i += 1) {
       if (this.linkBetweenImageContentAndHtmlEditorContent[i].key === key) {
         return this.linkBetweenImageContentAndHtmlEditorContent[i].val;
       }
     }
-    return null
+    return null;
   }
 
   getLinkingByVal(val) {
@@ -442,7 +467,7 @@ export class Layout {
         return this.linkBetweenImageContentAndHtmlEditorContent[i].key;
       }
     }
-    return null
+    return null;
   }
 
   imageHoverOn(curNode, curNodeInHtmlEditor) {
@@ -452,13 +477,12 @@ export class Layout {
       this.imageBoxContentHover = curNode;
       this.imageBoxContentHover.classList.add("active-data");
       this.imageBoxContentHover.classList.add("shadow");
-    } else {
-      if (curNode.classList.contains("active")) {
-        this.imageBoxContentHover = curNode;
-        this.imageBoxContentHover.classList.add("active-data");
-        this.imageBoxContentHover.classList.add("shadow");
-      }
+    } else if (curNode.classList.contains("active")) {
+      this.imageBoxContentHover = curNode;
+      this.imageBoxContentHover.classList.add("active-data");
+      this.imageBoxContentHover.classList.add("shadow");
     }
+
     curNodeInHtmlEditor.classList.add("white");
     for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
       curNodeInHtmlEditor.childNodes[i].classList.add("white");
@@ -489,7 +513,7 @@ export class Layout {
     }
 
     if (curLink !== null) {
-      curNodeInHtmlEditor = this.getLinking(curLink);
+      curNodeInHtmlEditor = this.getLinking(curLink); // eslint-disable-line no-param-reassign
       curNodeInHtmlEditor.classList.add("white");
       for (let i = 0; i < curNodeInHtmlEditor.childNodes.length; i += 1) {
         curNodeInHtmlEditor.childNodes[i].classList.add("white");
@@ -497,53 +521,6 @@ export class Layout {
 
       this.imageBoxContentHover.classList.add("active-data");
       this.imageBoxContentHover.classList.add("shadow");
-    }
-  }
-
-  getAllNodes(node) {
-    let nodes = []
-    nodes = this.parseNodeForChildren(node);
-    for (let i = 0; i < nodes.length; i += 1) {
-      let curNode = nodes[i];
-      nodes = nodes.concat(this.parseNodeForChildren(curNode, true));
-    }
-    return nodes;
-  }
-
-  getNodeCopyInEditor(editor, node) {
-    let arrOfActivatableElements = ["PLATE", "TABLE", "LEMON", "APPLE"];
-    if (arrOfActivatableElements.includes(node.tagName)) {
-      let editorNodes = this.getAllNodes(editor);
-      for (let i = 0; i < editorNodes.length; i += 1) {
-        if (editorNodes[i].isEqualNode(node)) {
-          return editorNodes[i];
-        }
-      }
-    }
-    return false;
-  }
-
-  checkNextSiblings(node1, node2) {
-    let node1Sibling = node1.nextSibling;
-    let node2Sibling = node2.nextSibling;
-
-    if (node1Sibling === node2Sibling) {
-      if (node1Sibling === null) {
-        return true
-      }
-      while (true) {
-        node1Sibling = node1Sibling.nextSibling;
-        node2Sibling = node2Sibling.nextSibling
-
-        if (node1Sibling !== node2Sibling) {
-          return false
-        }
-        if (node1Sibling === null) {
-          return true;
-        }
-      }
-    } else {
-      return false;
     }
   }
 
@@ -600,11 +577,6 @@ export class Layout {
     setTimeout(() => this.editorsBox.classList.remove("error"), 310);
   }
 
-  addLevelPassAnimation(el) {
-    el.classList.add("win");
-    el.classList.remove("shouldBeSelected");
-  }
-
   tryGetNextLevelButton() {
     return this.getCurrentLevelButton().nextSibling ? 1 : 0;
   }
@@ -641,16 +613,6 @@ export class Layout {
     this.htmlEditorText.innerText = "";
     const clone = newHtml.cloneNode(true);
     this.htmlEditorText.appendChild(clone);
-  }
-
-  fillLineNumeric(line) {
-    line.innerText = "";
-    for (let i = 1; i <= 20; i += 1) {
-      const span = createEl("span");
-      span.innerText = i;
-      span.setAttribute("class", "numeric");
-      line.appendChild(span);
-    }
   }
 }
 
