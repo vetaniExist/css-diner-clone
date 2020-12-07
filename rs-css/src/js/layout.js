@@ -382,12 +382,12 @@ export class Layout {
             this.imageHoverOn(curNode, curNodeInHtmlEditor);
           });
           curNode.addEventListener("mouseout", (event) => {
-            this.imageHoverOut(event, curNodeInHtmlEditor);
+            this.imageHoverOut(event, curNodeInHtmlEditor, true, false);
           });
 
           curNodeInHtmlEditor.addEventListener("mouseenter", () => {this.imageHoverOn(curNode, curNodeInHtmlEditor)});
           curNodeInHtmlEditor.addEventListener("mouseout", (event) => {
-            this.imageHoverOut(event, curNodeInHtmlEditor);
+            this.imageHoverOut(event, curNodeInHtmlEditor, false, true);
           });
         }
       }
@@ -459,35 +459,33 @@ export class Layout {
     curNodeInHtmlEditor.classList.add("white");
   }
   
-  imageHoverOut(event, curNodeInHtmlEditor) {
+  imageHoverOut(event, curNodeInHtmlEditor, isDirectCurLinking, isDirectImageBoxContentHover) {
     curNodeInHtmlEditor.classList.remove("white");
-    this.imageBoxContentHover.classList.remove("active-data");
-    this.imageBoxContentHover.classList.remove("shadow");
-
-    let curLink = this.getLinkingByVal(event.relatedTarget);
-    this.imageBoxContentHover = (curLink);
-
-    console.log("we here");
-    // console.log(event.relatedTarget);
-    // console.log(curLink)
-    if (curLink !== null) {
-      console.log("we here2");
-      console.log("linking");
-      console.log(this.imageBoxContentHover);
-      console.log(curLink);
-      // curNodeInHtmlEditor.classList.remove("white");
-      curNodeInHtmlEditor = this.getLinking(curLink);
-      // curNodeInHtmlEditor = curLink;
-      // curNodeInHtmlEditor.classList.remove("white");
-      curNodeInHtmlEditor.classList.add("white");
-
-      console.log("\n\n\n\n\n\n");
+    if (this.imageBoxContentHover) {
+      this.imageBoxContentHover.classList.remove("active-data");
+      this.imageBoxContentHover.classList.remove("shadow");
     }
 
-    // if (this.imageBoxContentHover.classList.contains("active")) {
+    let curLink;
+    if (isDirectCurLinking) {
+      curLink = this.getLinking(event.relatedTarget);
+    } else {
+      curLink = this.getLinkingByVal(event.relatedTarget);
+    }
+    
+    if (isDirectImageBoxContentHover) {
+      this.imageBoxContentHover = (curLink);
+    } else {
+      this.imageBoxContentHover = this.getLinkingByVal(curLink);
+    }
+    
+    if (curLink !== null) {
+      curNodeInHtmlEditor = this.getLinking(curLink);
+      curNodeInHtmlEditor.classList.add("white");
+
       this.imageBoxContentHover.classList.add("active-data");
       this.imageBoxContentHover.classList.add("shadow");
-    // }
+    }
   }
 
   getAllNodes(node) {
